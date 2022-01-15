@@ -1,0 +1,942 @@
+window.onload=function(){
+    //set default type for button tag 
+    $$('button').each( function( item ) { 
+        if( item.getAttribute('type') == null ){
+            item.setAttribute('type', 'button');
+        }
+    });
+};
+
+var JSONResponse = Class.create( {
+
+	_formId: null,
+	_exception: null,
+	_errors: null,
+	_valid: false,
+
+	initialize: function( transport ) {
+
+		// Check content type
+		var contentType = transport.getResponseHeader( 'Content-Type' );
+		if ( contentType == null ) return;
+		if ( !contentType.startsWith( 'application/json' ) ) return;
+
+		try {
+			var json = transport.responseText.evalJSON();
+
+			this._formId = json[ 'formId' ];
+			this._exception = json[ 'exception' ];
+			this._errors = $H( json[ 'errors' ] );
+			this._valid = true;
+		}
+		catch ( e ) {}
+	},
+
+	getFormId: function() {
+		return this._formId;
+	},
+
+	getException: function() {
+		return this._exception;
+	},
+
+	isValid: function() {
+		return this._valid;
+	},
+
+	hasErrors: function() {
+		return this.getException() != null || this.hasFieldErrors();
+	},
+
+	hasFieldErrors: function() {
+		if ( this._errors == null ) return false;
+		return this._errors.keys().length > 0;
+	},
+
+	getFirstErrorField: function() {
+		return this._errors.keys()[ 0 ];
+	},
+
+	getFirstErrorMessage: function() {
+		return this._errors.get( this.getFirstErrorField() )[ 0 ];
+	},
+
+	showErrors: function() {
+
+		if ( this.getException() != null ) {
+			if ( this.getException() == '로그인이 필요합니다.' )
+				executeAction( contextPath + '/comm/support/login/loginForm', { redirUrl: location.href } );
+			else
+				alert( this.getException() );
+			return null;
+		}
+
+		if ( this.hasFieldErrors() ) {
+			alert( this.getFirstErrorMessage() );
+			return this.getFirstErrorField();
+		}
+
+		return null;
+	}
+} );
+
+function _actionToUrl( action ) {
+	return action + '.action';
+}
+
+function executeAction( action, paramsJson ) {
+
+	var url = _actionToUrl( action );
+
+	if ( paramsJson != null ) url += '?' + $H(paramsJson).toQueryString();
+
+	location.href = url;
+}
+
+function validate( form ) {
+	new Ajax.Request(
+		form.action,
+		{
+			method: form.method,
+			parameters: Form.serialize( form ) + '&struts.enableAjaxValidation=true&struts.formId=' + form.id,
+			onComplete: function( transport ) {
+				var response = new JSONResponse( transport );
+
+				if ( response.hasErrors() ) {
+					var field = response.showErrors();
+					form[ field ].focus();
+				}
+				else
+					form.submit();
+			}
+		}
+	);
+
+	return false;
+}
+
+function validateAndSubmit( form ) {
+
+	var success = true;
+
+	new Ajax.Request(
+		form.action,
+		{
+			method: form.method,
+			parameters: Form.serialize( form ) + '&struts.formId=' + form.id,
+			asynchronous: false,
+			onSuccess: function( transport ) {
+				var response = new JSONResponse( transport );
+
+				if ( response.hasErrors() ) {
+					var field = response.showErrors();
+					if ( field != null ) form[ field ].focus();
+					success = false;
+				}
+			}
+		}
+	);
+
+	return success;
+}
+
+function validateAndRequest( action, paramsJson ) {
+
+	var url = _actionToUrl( action );
+	var success = true;
+
+	new Ajax.Request(
+		url,
+		{
+			method: 'post',
+			parameters: $H( paramsJson ).toQueryString(),
+			asynchronous: false,
+			onComplete: function( transport ) {
+				var response = new JSONResponse( transport );
+
+				if ( response.hasErrors() ) {
+					response.showErrors();
+					success = false;
+				}
+			}
+		}
+	);
+
+	return success;
+}
+
+function requestData( action, paramsJson, handlerOnFieldError ) {
+
+	var url = _actionToUrl( action );
+	var result = null;
+	new Ajax.Request(
+		url,
+		{
+			method: 'post',
+			parameters: $H( paramsJson ).toQueryString(),
+			asynchronous: false,
+			onComplete: function( transport ) {
+
+				var response = new JSONResponse( transport );
+
+				if ( response.hasErrors() ) {
+					var fieldName = response.showErrors();
+					if ( handlerOnFieldError != null && fieldName != null ) handlerOnFieldError( fieldName );
+					return;
+				}
+
+				result = transport.responseJSON;
+			}
+		}
+	);
+
+	return result;
+}
+
+function updateContainer( container, action, paramsJson ) {
+
+	var url = _actionToUrl( action );
+	var success = true;
+
+	new Ajax.Updater(
+		container,
+		url,
+		{
+			method: 'post',
+			parameters: $H( paramsJson ).toQueryString(),
+			onComplete: function( transport ) {
+				var response = new JSONResponse( transport );
+
+				if ( response.hasErrors() ) {
+					response.showErrors();
+					success = false;
+				}
+			}
+		}
+	);
+
+	return success;
+}
+
+function requestBatch( action, handlerOnComplete, paramsJson ) {
+	ProgressBar.show();
+	var script = '_requestBatch( \'' + action + '\', ' + handlerOnComplete + ', ' + $H( paramsJson ).toJSON() + ' );';
+	setTimeout( script, 0 );
+}
+
+function _requestBatch( action, handlerOnComplete, paramsJson ) {
+
+	var url = _actionToUrl( action );
+	var success = true;
+
+	new Ajax.Request(
+		url,
+		{
+			method: 'post',
+			parameters: $H( paramsJson ).toQueryString(),
+			onComplete: function( transport ) {
+				ProgressBar.hide();
+
+				var response = new JSONResponse( transport );
+
+				if ( response.hasErrors() ) {
+					response.showErrors();
+					success = false;
+				}
+
+				handlerOnComplete( success, success ? transport.responseJSON : null );
+			}
+		}
+	);
+}
+
+function setStyle( cssRule, style ) {
+	$$( cssRule ).each(
+		function( item ) {
+			item.setStyle( style );
+		}
+	);
+}
+
+function findElement( cssRule ) {
+
+	var items = $$( cssRule );
+	if ( items == null ) return null;
+
+	return items[ 0 ];
+}
+
+function openReportPopup( reportFileName, showToolbar, readonly, rpArgs, rvArgs, width, height ) {
+
+	var rp = '';
+	var rv = '';
+
+	if ( rpArgs != null )
+		for ( var i = 0; i < rpArgs.length; i++ )
+			rp += '[' + rpArgs[ i ] + '] ';
+
+	var hash = $H( rvArgs );
+	hash.set( 'url', location.href );
+
+	hash.keys().each(
+		function( key ) {
+			rv += key + '[' + hash.get( key ) + '] ';
+		}
+	);
+	if ( width == null || height == null )
+	{
+		width = '800';
+		height = '600';
+	}
+	openPopup(
+		{ width: width, height: height },
+		'/common/reportPopup.action',
+		{
+			reportFileName: reportFileName,
+			showToolbar: showToolbar,
+			readonly: readonly,
+			url: location.href,
+			rpArgs: rp,
+			rvArgs: rv,
+			height: height
+		},
+		'report'
+	);
+}
+
+/**
+ * openHelp 도움팝업을 호출한다.
+ */
+function openHelp() {
+
+	var url = location.href;
+	var first = url.indexOf( '/', 7 );
+	var last = url.lastIndexOf( '/' );
+
+	openPopup(
+		{ width: 750, height: 550 },
+		contextPath + '/comm/program/mngProgram/helpPopup.action',
+		{
+			'program.prog_url': url.substring( first, last + 1 )
+		}
+	);
+}
+
+/*
+ * openPopup 함수 : 팝업창을 호출하면서 값을 전달 하는 함수
+ * + parma1 : 창  사이즈  및 위치 조정 정의(옵션)
+ * + param2 : 호출할 팝업창 URL
+ * + param3 : 전달할 매개변수
+*/
+function openPopup(options, url, paramsHash, popupId) {
+
+	var strOptions = '';
+	var popId = popupId;
+
+	var width = 500;
+	var height = 500;
+
+	var ah = screen.availHeight - 30;
+	var aw = screen.availWidth - 10;
+
+	var xc = (aw - width) / 2;
+	var yc = (ah - height) / 2;
+	if ( Object.isString(options) )
+		strOptions = options;
+	else {
+		// Default Values
+		var defaultOptions = $H({
+			width : width,
+			height : height,
+			left : xc,
+			screenX : xc,
+			top : yc,
+			screenY : yc,
+			toolbar : 'no',
+			scrollbars : 'no'
+		});
+
+		defaultOptions.update(options);
+		defaultOptions.each( function( pair ) {
+			if ( strOptions != '' ) strOptions += ', ';
+			strOptions += pair.key + '=' + pair.value;
+		} );
+	}
+	if ( paramsHash != null ) url += '?' + $H(paramsHash).toQueryString();
+	if ( popId == null ) popId = '_blank';
+	window.open(url, popId, strOptions);
+}
+/*
+function showDialog(options, url, paramsHash) {
+
+	var strOptions = '';
+
+	var width = 445;
+	var height = 490;
+
+	var ah = screen.availHeight - 30;
+	var aw = screen.availWidth - 10;
+
+	var xc = (aw - width) / 2;
+	var yc = (ah - height) / 2;
+	if ( Object.isString(options) )
+		strOptions = options;
+	else {
+		// Default Values
+		var defaultOptions = $H({
+			dialogWidth : width+"px",
+			dialogHeight : height+"px",
+			dialogLeft : xc,
+			dialogTop : yc,
+			maximize : 'no',
+			minimize : 'no',
+			center : 'yes',
+			scroll : 'no',
+			status : 'no',
+			help : 'no'
+		});
+
+		defaultOptions.update(options);
+		defaultOptions.each( function( pair ) {
+			if ( strOptions != '' ) strOptions += '; ';
+			strOptions += pair.key + ':' + pair.value;
+		} );
+	}
+	if ( paramsHash != null ) url += '?' + $H(paramsHash).toQueryString();
+
+	return window.showModalDialog(url, '', strOptions);
+}
+*/
+
+function searchSecondSelect(param, actionName) {
+	var actName = "";
+	if(actionName==null)
+		actName = "doubleSelectLink.action"; // default
+	else
+		actName = actionName+'.action';
+	var ajax = new Ajax.Request(
+		actName,
+		{ 	method: 'post',
+			parameters: param.toQueryString()
+		}
+	);
+}
+
+/**
+ * 입력 필드 관련 Utils
+ */
+var Utils = {
+
+	_getFieldType: function( fieldId ) {
+
+		var field = $( fieldId );
+		if ( field == null ) return null;
+		var type = field.tagName;
+
+		if ( field.tagName == 'INPUT' ) type += '_' + field.type;
+
+		return type;
+	},
+
+	focus: function( fieldId ) {
+
+		var field = $( fieldId );
+		var type = this._getFieldType( fieldId );
+		if ( field == null ) return;
+
+		if ( type == 'INPUT_hidden' ) field = $( field.id + '_' );
+
+		field.focus();
+		field.select();
+	},
+
+	/**
+	 * 필드의 값을 변경한다.
+	 */
+	_setFieldValue: function( fieldId, value ) {
+
+		if ( value == null ) return;
+		value = value.toString();
+		var field = $( fieldId );
+		var type = this._getFieldType( fieldId );
+		if ( field == null ) return;
+		var disabled = field.disabled;
+
+		field.disabled = false;
+
+		switch ( type ) {
+			case 'INPUT_text':
+			case 'INPUT_password':
+			case 'TEXTAREA':
+				field.value = value;
+				break;
+			case 'INPUT_checkbox':
+				field.checked = value == 'true';
+				break;
+			case 'INPUT_hidden':
+				field.value = value;
+				var coverField = $( field.id + '_' );
+				// DatePicker 또는 TimePicker인 경우
+				if ( coverField != null && coverField.hasClassName( 'datePicker' ) )
+					coverField.value = eval( 'DatePicker._toCoverValue( \'' + value + '\' )' );
+				if ( coverField != null && coverField.hasClassName( 'timePicker' ) )
+					coverField.value = eval( 'TimePicker._toCoverValue( \'' + value + '\' )' );
+				break;
+			case 'SELECT':
+				for ( var i = 0; i < field.options.length; i++ ) {
+					if ( field.options[ i ].value == value ) {
+						field.selectedIndex = i;
+						break;
+					}
+					if ( i == field.options.length - 1 ) field.selectedIndex = 0;
+				}
+				break;
+		}
+
+		field.disabled = disabled;
+	},
+
+	/**
+	 * 필드의 값을 변경하고 변경되었음을 알리는 이벤트를 발생시킨다.
+	 */
+	setFieldValue: function( fieldId, value ) {
+
+		this._setFieldValue( fieldId, value );
+
+		var field = $( fieldId );
+		var type = this._getFieldType( fieldId );
+		if ( field == null ) return;
+
+		switch ( type ) {
+			case 'INPUT_text':
+			case 'INPUT_password':
+			case 'TEXTAREA':
+			case 'SELECT':
+				this.fireEvent( fieldId, 'change' );
+				break;
+			case 'INPUT_hidden':
+				var coverField = $( field.id + '_' );
+				if ( coverField != null ) this.fireEvent( coverField, 'change' );
+				break;
+			case 'INPUT_checkbox':
+				this.fireEvent( fieldId, 'click' );
+				break;
+		}
+	},
+
+	getFieldValue: function( fieldId ) {
+
+		var field = $( fieldId );
+		var type = this._getFieldType( fieldId );
+		if ( field == null ) return null;
+
+		switch ( type ) {
+			case 'INPUT_text':
+			case 'INPUT_password':
+			case 'INPUT_hidden':
+			case 'TEXTAREA':
+			case 'SELECT':
+				return field.value;
+			case 'INPUT_checkbox':
+				return field.checked ? 'true' : 'false';
+		}
+
+		return null;
+	},
+
+	getUpperCasedFieldValue: function( fieldId ) {
+		return this.getFieldValue( fieldId ).toUpperCase();
+	},
+
+	getPurifiedFieldValue: function( fieldId ) {
+		return this.getFieldValue( fieldId ).replace( /\s/g, '' );
+	},
+
+	getUpperCasedPurifiedFieldValue: function( fieldId ) {
+		return this.getFieldValue( fieldId ).replace( /\s/g, '' ).toUpperCase();
+	},
+
+	getFieldText: function( fieldId ) {
+
+		var field = $( fieldId );
+		var type = this._getFieldType( fieldId );
+		if ( field == null ) return null;
+
+		switch ( type ) {
+			case 'INPUT_text':
+			case 'INPUT_password':
+			case 'INPUT_hidden':
+			case 'TEXTAREA':
+				return field.value;
+			case 'INPUT_checkbox':
+				return field.checked ? 'true' : 'false';
+			case 'SELECT':
+				return field.options[ field.selectedIndex ].text;
+		}
+
+		return null;
+	},
+
+	observeChange: function( fieldId, handlerOnChange ) {
+
+		var field = $( fieldId );
+		var type = this._getFieldType( fieldId );
+		if ( field == null ) return;
+
+		switch ( type ) {
+			case 'INPUT_text':
+			case 'INPUT_password':
+			case 'TEXTAREA':
+			case 'SELECT':
+				field.observe( 'change', handlerOnChange );
+				break;
+			case 'INPUT_checkbox':
+				field.observe( 'click', handlerOnChange );
+				break;
+			case 'INPUT_hidden':
+				var coverField = $( field.id + '_' );
+				// DatePicker 또는 TimePicker인 경우
+				if ( coverField != null ) coverField.observe( 'change', handlerOnChange );
+				break;
+		}
+	},
+
+	stopObservingChange: function( fieldId ) {
+
+		var field = $( fieldId );
+		var type = this._getFieldType( fieldId );
+		if ( field == null ) return;
+
+		switch ( type ) {
+			case 'INPUT_text':
+			case 'INPUT_password':
+			case 'TEXTAREA':
+			case 'SELECT':
+				field.stopObserving( 'change' );
+				break;
+			case 'INPUT_checkbox':
+				field.stopObserving( 'click' );
+				break;
+			case 'INPUT_hidden':
+				var coverField = $( field.id + '_' );
+				// DatePicker 또는 TimePicker인 경우
+				if ( coverField != null ) coverField.stopObserving( 'change' );
+				break;
+		}
+	},
+
+	isEditableOnModify: function( fieldId ) {
+
+		var field = $( fieldId );
+		if ( field == null ) return false;
+
+		var notEditable = field.getAttribute( 'notEditableOnModify' );
+
+		return notEditable == null || notEditable != 'true';
+	},
+
+	isConstant: function( fieldId ) {
+
+		var field = $( fieldId );
+		if ( field == null ) return false;
+
+		var constant = field.getAttribute( 'constant' );
+
+		return constant != null && constant == 'true';
+	},
+
+	_setEditableInternal: function( fieldId, editable, skipConstant, buttonTogether ) {
+
+		var field = $( fieldId );
+		var type = this._getFieldType( fieldId );
+		if ( field == null ) return;
+
+		if(type == 'BUTTON') {
+		    if(editable) {
+		        field.style.color= "#325273";
+		        field.style.cursor='pointer';
+		    } else {
+		        field.style.color= "#AAA";
+		        field.style.cursor='default';
+		    }
+		}
+		
+		switch ( type ) {
+			case 'INPUT_text':
+			case 'INPUT_password':
+			case 'TEXTAREA':
+				if ( !skipConstant || !this.isConstant( fieldId ) )
+					field.readOnly = !editable;
+
+				if ( buttonTogether ) {
+					// field 바로 다음에 버튼이 있을 경우 버튼도 활성화/비활성화 한다.
+					var button = field.next();
+					if ( button != null && button.tagName == 'BUTTON' ) button.disabled = !editable;
+				}
+
+				break;
+			case 'INPUT_hidden':
+				var coverField = $( field.id + '_' );
+				// DatePicker 또는 TimePicker인 경우
+				if ( coverField != null )
+					coverField.disabled = !editable;
+				break;
+			default:
+				field.disabled = !editable;
+				break;
+		}
+
+		switch ( type ) {
+			case 'INPUT_text':
+			case 'INPUT_password':
+			case 'TEXTAREA':
+				if ( !skipConstant || !this.isConstant( fieldId ) ) {
+					if ( editable ) field.removeClassName( 'disabled' );
+					else field.addClassName( 'disabled' );
+				}
+				break;
+			case 'INPUT_hidden':
+				var coverField = $( field.id + '_' );
+				// DatePicker 또는 TimePicker인 경우
+				if ( coverField != null ) {
+					if ( editable ) coverField.removeClassName( 'disabled' );
+					else coverField.addClassName( 'disabled' );
+				}
+				break;
+		}
+	},
+
+	/**
+	 * 필드의 편집가능여부를 지정한다.
+	 * 단, constant인 필드는 변경시키지 않는다.
+	 * 그리드와의 바인딩에 사용한다.
+	 */
+	_setEditable: function( fieldId, editable ) {
+		this._setEditableInternal( fieldId, editable, true, true );
+	},
+
+	/**
+	 * 필드의 편집가능여부를 지정한다.
+	 */
+	setEditable: function( fieldId, editable ) {
+		this._setEditableInternal( fieldId, editable, false, false );
+	},
+
+	fireEvent: function( fieldId, eventName ) {
+
+		var field = $( fieldId );
+		if ( field == null ) return;
+		var disabled = field.disabled;
+
+		field.disabled = false;
+
+		if ( field.fireEvent )
+			field.fireEvent( 'on' + eventName );
+		else if ( document.createEvent ) {
+			var event = document.createEvent( 'HTMLEvents' );
+			event.initEvent( eventName, true, true );
+			field.dispatchEvent( event );
+		}
+
+		field.disabled = disabled;
+	}
+};
+
+/**
+ * Select 관련 Utils
+ */
+var SelectUtils = {
+
+	update: function( fieldId, action, paramsJSON ) {
+
+		var thisObj = this;
+		var updated = 0;
+
+		new Ajax.Request(
+			action + '.action',
+			{
+				method: 'post',
+				asynchronous: false,
+				parameters: $H( paramsJSON ).toQueryString(),
+				onSuccess: function( transport ) {
+					var data = transport.responseJSON;
+					thisObj.clearOptions( fieldId );
+					for ( var i = 0; i < data.length; i++ )
+						thisObj.addOption( fieldId, data[ i ].key, data[ i ].value );
+					updated = data.length;
+				}
+			}
+		);
+
+		return updated;
+	},
+
+	clearOptions: function( fieldId ) {
+
+		var field = $( fieldId );
+
+		while ( field.options.length > 0 ) field.options.remove( 0 );
+	},
+
+	addOption: function( fieldId, value, text ) {
+
+		var field = $( fieldId );
+		var opt = document.createElement( 'OPTION' );
+		field.options.add( opt );
+		opt.value = value;
+		opt.innerText = text;
+	},
+
+	insertOption: function( fieldId, value, text, index ) {
+
+		var field = $( fieldId );
+		if ( index == null ) index = 0;
+		var opt = document.createElement( 'OPTION' );
+		field.insertBefore( opt, field.options.item( index ) );
+		opt.value = value;
+		opt.innerText = text;
+		field.value = value;
+	},
+
+	removeOption: function( fieldId, index ) {
+
+		var field = $( fieldId );
+		field.options.remove( index );
+	}
+};
+
+var KeyUtils = {
+
+	/**
+	 * 내용을 변경하지 않는 키인지 검사한다.
+	 */
+	isSilentKey: function( keyCode ) {
+		switch ( keyCode ) {
+			case 9:		// Tab
+			case 12:	// KeyPad Center
+			case 13:	// Enter
+			case 16:	// Shift
+			case 17:	// Ctrl
+			case 18:	// Alt
+			case 19:	// Pause
+			case 20:	// Caps Lock
+			case 25:	// Chinese
+			case 33:	// PgUp
+			case 34:	// PgDn
+			case 35:	// End
+			case 36:	// Home
+			case 37:	// Left
+			case 38:	// Up
+			case 39:	// Right
+			case 40:	// Down
+			case 45:	// Insert
+			case 91:	// Left Window
+			case 92:	// Right Window
+			case 93:	// Menu
+			case 112:	// F1
+			case 113:	// F2
+			case 114:	// F3
+			case 115:	// F4
+			case 116:	// F5
+			case 117:	// F6
+			case 118:	// F7
+			case 119:	// F8
+			case 120:	// F9
+			case 121:	// F10
+			case 122:	// F11
+			case 123:	// F12
+			case 145:	// Scroll Lock
+			case 144:	// Num Lock
+				return true;
+		}
+
+		return false;
+	}
+};
+
+function getTagYn(str) {
+	var reg = new RegExp('<[^<>]*>','gi');
+	return reg.test(str);
+}
+String.prototype.replaceAll = function( searchStr, replaceStr ) {
+	return this.replace( new RegExp(searchStr,'gi'), replaceStr ).toString();
+}
+
+document.observe("dom:loaded", function() {
+	if (window.Event) // 넷스케이프에서만 대문자 E.
+		  if (document.captureEvents) document.captureEvents(Event.MOUSEUP); // mouse up 이벤트를 잡음
+	function nocontextmenu() {   // IE
+	   event.cancelBubble = true;
+	   event.returnValue = false;
+	   return false;
+	}
+	function norightclick(e)    // Others
+	{
+	   nostatus();			
+	   if (window.Event && document.captureEvents) {
+	      if (e.which == 2 || e.which == 3)
+	         return false;
+	   } else
+	      if (event.button == 2 || event.button == 3){
+	         event.cancelBubble = true;
+	         event.returnValue = false;
+	         return false;
+	      } 	   
+	}	
+	function nostatus() {
+		window.status = '';
+		return true;
+	}
+	function lockKey() {
+		switch ( event.keyCode ) {
+		case 9:		// Tab
+		case 12:	// KeyPad Center
+		case 13:	// Enter
+		case 16:	// Shift
+		case 17:	// Ctrl
+		case 18:	// Alt
+		case 19:	// Pause
+		case 20:	// Caps Lock
+		case 25:	// Chinese
+		case 33:	// PgUp
+		case 34:	// PgDn
+		case 35:	// End
+		case 36:	// Home
+		case 37:	// Left
+		case 38:	// Up
+		case 39:	// Right
+		case 40:	// Down
+		case 45:	// Insert
+		case 91:	// Left Window
+		case 92:	// Right Window
+		case 93:	// Menu
+		case 112:	// F1
+		case 113:	// F2
+		case 114:	// F3
+		case 115:	// F4
+		//case 116:	// F5
+		case 117:	// F6
+		case 118:	// F7
+		case 119:	// F8
+		case 120:	// F9
+		case 121:	// F10
+		case 122:	// F11
+		//case 123:	// F12
+		case 145:	// Scroll Lock
+		case 144:	// Num Lock
+			return true;
+		break;
+		case 116: 
+		case 123: 
+			return false;
+		break;
+		}
+	}
+	document.oncontextmenu = nocontextmenu;
+	document.onmousedown = norightclick;
+	document.onmouseover = nostatus;
+	document.onkeydown = lockKey;
+	document.onselectstart=new Function("return false");
+	document.ondragstart=new Function("return false");
+}
+);

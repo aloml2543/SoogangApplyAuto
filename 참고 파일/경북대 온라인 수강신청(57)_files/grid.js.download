@@ -1,0 +1,1519 @@
+var DataGrid = Class.create( {
+
+	_id: null,
+	_id_len : null,
+	_gridDiv: null,
+	_loadUrl: null,
+	_saveUrl: null,
+	_renderCellUrl: null,
+	_columnsProperty: null,
+	_rowsProperty: null,
+	_addedRowsProperty: null,
+	_modifiedRowsProperty: null,
+	_deletedRowsProperty: null,
+	_emptyMessageProperty: null,
+	_viewColumn: null,
+	_checkable: null,
+	_showRowNumber: null,
+	_paged: false,
+	_totalRowCountProperty: null,
+	_rowCountPerPage: 0,
+	_pageIndexCount: 0,
+	_showTotalCount: false,
+	_lastColumnNoRender : false,
+
+	_selectedRowId: null,
+	_bindings: null,
+	_rowCount: 0,
+	_recentParams: null,
+	_page: 0,
+	_originalContent: null,
+
+	_width: 0,
+	_height: 0,
+	_tableWidth: 0,
+	_sortingColumn: null,
+	_sortingOrder: false,
+	_serverSortingYn : false,
+	_refreshCellAsyncYn:false,
+
+	// Handlers
+	_onLoad: function() {},
+	_onRowSelecting: function( rowId ) { return true; },
+	_onRowClick: function( rowId ) {},
+	_onRowDblClick: function( rowId ) {},
+	_onRowChanged: function( rowId ) {},
+	_onPageChanging: function( page ) { return true; },
+	_onGridSorting: function( colProperty, desc ) {
+		if(this.isDirty())
+			if (!confirm("변경된 데이터가 존재합니다. 정렬시 데이터를 잃게 됩니다.\n 정렬 하시겠습니까?"))
+				return false;
+		return true;
+	},
+	_onRowChecked: function( rowId, checked ) {},
+	_onGridScroll: function() {},
+
+	initialize: function( id, loadUrl, saveUrl, renderCellUrl, columnsProperty, rowsProperty, addedRowsProperty, modifiedRowsProperty, deletedRowsProperty, emptyMessageProperty, viewColumn, checkable, showRowNumber, paged, totalRowCountProperty, rowCountPerPage, pageIndexCount, showTotalCount, lastColumnNoRender, serverSortingYn ) {
+		this._id = id;
+		this._id_len = id.length;
+		this._gridDiv = $( id );
+		this._gridDiv.addClassName( 'grid' );
+		this._loadUrl = loadUrl;
+		this._saveUrl = saveUrl;
+		this._renderCellUrl = renderCellUrl;
+		this._columnsProperty = columnsProperty;
+		this._rowsProperty = rowsProperty;
+		this._addedRowsProperty = addedRowsProperty;
+		this._modifiedRowsProperty = modifiedRowsProperty;
+		this._deletedRowsProperty = deletedRowsProperty;
+		this._emptyMessageProperty = emptyMessageProperty;
+		this._viewColumn = viewColumn;
+		this._checkable = checkable;
+		this._showRowNumber = showRowNumber;
+		this._paged = paged;
+		this._totalRowCountProperty = totalRowCountProperty;
+		this._rowCountPerPage = rowCountPerPage;
+		this._pageIndexCount = pageIndexCount;
+		this._showTotalCount = showTotalCount;
+		this._lastColumnNoRender = lastColumnNoRender;
+		this._bindings = $H();
+		this._serverSortingYn = serverSortingYn;
+
+		var thisObj = this;
+		this._gridDiv.observe( 'keydown', function( event ) {
+			var processed = thisObj.processKey( event.element(), event.keyCode );
+			if ( processed ) event.returnValue = false;
+		} );
+	},
+
+	/**
+	 * 그리드 컨트롤의 크기를 지정한다.
+	 * 내부의 테이블 크기는 그리드에 맞도록 자동 조정된다.
+	 *
+	 * @param width 폭(px)
+	 * @param height 높이(px)
+	 */
+	setSize: function( width, height ) {
+		this._width = width;
+		this._height = height;
+
+		if ( this._tableWidth == 0 ) this._tableWidth = this._width - 17;
+
+		setStyle( 'div#' + this._id, { width: this._width + 'px', height: this._height + 'px' } );
+		
+//		setStyle( 'div#' + this._id + ' table colgroup, th, td ', { display: 'none' } );
+//		if(this._checkable) {
+//			setStyle( 'div#' + this._id + ' table .checked', { display: '' } );
+//		}
+//		setStyle( 'div#' + this._id + ' table .organ_cde', { display: '' } );
+//		setStyle( 'div#' + this._id + ' table .kor_nm', { display: '' } );
+	},
+
+	/**
+	 * 그리드 내부의 테이블의 폭을 지정한다.
+	 * 그리드의 폭보다 크면 그리드에 가로 스크롤바가 생긴다.
+	 * 지정하지 않으면 테이블의 크기는 그리드에 맞게 자동 조정된다.
+	 *
+	 * @param tableWidth 테이블의 폭(px)
+	 */
+	setTableWidth: function( tableWidth ) {
+		this._tableWidth = tableWidth;
+	},
+	/**
+	 * Cell을 다시 그릴때 동기화 할지 비동기활지 여부 이다.
+	 * true 면 비동기화 false면 동기화
+	 * default 값은 false이다.
+	 *
+	 * @param tableWidth 테이블의 폭(px)
+	 */
+	setRefreshCellAsyncYn: function( bool ) {
+		this._refreshCellAsyncYn = bool;
+	},
+
+	/**
+	 * 데이터를 불러와서 그리드를 다시 그린다.
+	 *
+	 * @param params 조회 조건들(JSON)
+	 * @param page 페이지 번호
+	 */
+	load: function( params, page, orderProperty ) {
+
+		var thisObj = this;
+		var content = this._gridDiv.innerHTML;
+		var loadingImg = '<div class="loading"></div>';
+		this._recentParams = params;
+
+		var paramsHash = $H( params );
+		paramsHash.set( 'id', this._id );
+		paramsHash.set( 'columnsProperty', this._columnsProperty );
+		paramsHash.set( 'rowsProperty', this._rowsProperty );
+		paramsHash.set( 'emptyMessageProperty', this._emptyMessageProperty );
+		paramsHash.set( 'viewColumn', this._viewColumn );
+		paramsHash.set( 'checkable', this._checkable );
+		paramsHash.set( 'showRowNumber', this._showRowNumber );
+		paramsHash.set( 'paged', this._paged );
+		paramsHash.set( 'serverSortingYn', this._serverSortingYn );
+		paramsHash.set( 'lastColumnNoRender', this._lastColumnNoRender );
+		if ( this._paged ) {
+			this._page = page == null ? 1 : page;
+			paramsHash.set( 'totalRowCountProperty', this._totalRowCountProperty );
+			paramsHash.set( 'rowCountPerPage', this._rowCountPerPage );
+			paramsHash.set( 'pageIndexCount', this._pageIndexCount );
+			paramsHash.set( 'showTotalCount', this._showTotalCount );
+			paramsHash.set( 'page', this._page );
+		}
+		if (orderProperty != null ) {
+			paramsHash.set( 'orderProperty', this._sortingColumn );
+			paramsHash.set( 'descYn', this._sortingOrder );
+			loadingImg = '<div class="sorting"></div>';
+		}
+		thisObj._gridDiv.update(loadingImg);
+		new Ajax.Request(
+			this._loadUrl,
+			{
+				method: 'post',
+				parameters: paramsHash.toQueryString(),
+				onSuccess: function( transport ) {
+					var response = new JSONResponse( transport );
+
+					if ( response.isValid() ) {
+						thisObj._gridDiv.update( content );
+						if ( response.hasErrors() ) {
+							var field = response.showErrors();
+							if ( field != null ) Utils.focus( field );
+						}
+					}
+					else {
+						thisObj._originalContent = transport.responseText;
+						thisObj.renderContent();
+						thisObj.executeHandlerOnLoad();
+					}
+				}
+			}
+		);		
+		
+	},
+
+	renderContent: function() {
+
+		var thisObj = this;
+
+		
+		this._gridDiv.update( this._originalContent );
+		
+		if ( this._width != 0 ) setStyle( 'div#' + this._id + ' div.title', { width: ( this._width - 17 ) + 'px' } );
+		if ( this._width != 0 ) setStyle( 'div#' + this._id + ' div.data', { width: this._width + 'px' } );
+		if ( this._paged ) setStyle( 'div#' + this._id + ' div.data', { height: ( this._height - 35 ) + 'px', borderBottom: '1px solid #cfcfcf' } );
+		if ( this._tableWidth != 0 ) setStyle( 'div#' + this._id + ' table', { width: this._tableWidth + 'px' } );
+		this._gridDiv.down( 'div.data' ).observe( 'scroll', function( event ) {
+			thisObj._gridDiv.down( 'div.title' ).scrollLeft = event.element().scrollLeft;
+		} );
+		this._rowCount = $$( 'div#' + thisObj._id + ' div.data table tr.data' ).length;
+		this._selectedRowId = null;
+		this.setGridEventScroll();
+		this.applyBinding();
+	},
+
+	processKey: function( element, keyCode ) {
+
+		if ( element.tagName == 'DIV' || element.tagName == 'TABLE' ) return true;
+		if (element.up( 'tr.data' ) == null) return true;
+		var field = element.tagName == 'TD' ? null : element;
+		var property = (element.tagName == 'TD' ? element : element.up( 'td' ) ).className;
+		var rowId = this.convertTrIdToRowId( element.up( 'tr.data' ).id );
+		var newRowId = null;
+		if(element.tagName == 'TEXTAREA') return false;
+
+		switch ( keyCode ) {
+			case 38:	// Up
+				newRowId = this.beEditorFindPreviousRowId( rowId, property, field );
+				break;
+			case 40:	// Down
+				newRowId = this.beEditorFindNextRowId( rowId, property, field );
+				break;
+		}
+
+		switch ( keyCode ) {
+			case 38:	// Up
+			case 40:	// Down
+				if ( newRowId != null ) {
+					this.selectRow( newRowId );
+					// 셀에 입력 필드가 없는 경우(td에서 이벤트가 발생)
+					if ( field == null )
+						this.getCell( newRowId, property ).focus();
+					else
+						Utils.focus( this.getCellEditor( newRowId, property ) );
+
+					return true;
+				}
+		}
+
+		return false;
+	},
+
+	beEditorFindPreviousRowId: function(rowId, property, field) {
+
+		var cellEditor = null;
+		var cnt = 0;
+		if (field != null) {
+			do {
+				rowId = this.findPreviousRowId( rowId );
+				cellEditor = this.getCellEditor( rowId, property);
+				if (cnt++ >= this._rowCount-1) break;
+			} while(cellEditor == null && this._selectedRowId != 0);
+		}
+		else rowId = this.findPreviousRowId( rowId );
+		return rowId;
+	},
+
+	beEditorFindNextRowId: function(rowId, property, field) {
+
+		var cellEditor = null;
+		var cnt = 0;
+		if (field != null) {
+			do {
+				rowId = this.findNextRowId( rowId );
+				cellEditor = this.getCellEditor( rowId, property);
+				if (cnt++ >= this._rowCount-1) break;
+			} while(cellEditor == null && this._selectedRowId != (this._rowCount-1));
+		}
+		else rowId = this.findNextRowId( rowId );
+		return rowId;
+	},
+	/**
+	 * 모든 행 객체(tr)를 구한다.
+	 *
+	 * @return 행 객체의 배열
+	 */
+	getRows: function() {
+
+		return $$( 'div#' + this._id + ' div.data tr.data' ).findAll(
+			function( item ) {
+				// 삭제 표시된 행은 제외한다.
+				return !item.hasClassName( 'deleted' );
+			}
+		);
+	},
+
+	/**
+	 * 모든 행 객체에 대해 iterator를 반복한다.
+	 *
+	 * @param iterator 각 행에 대해서 반복할 함수(파라미터: rowId)
+	 */
+	eachRow: function( iterator ) {
+
+		var thisObj = this;
+
+		this.getRows().each(
+			function( item ) {
+				iterator( thisObj.convertTrIdToRowId( item.id ), item );
+			}
+		);
+	},
+
+	/**
+	 * 지정한 컬럼의 셀 목록을 구한다.
+	 *
+	 * @param property
+	 * @return 셀 객체(td)의 배열
+	 */
+	getCells: function( property ) {
+		return $$( 'div#' + this._id + ' div.data tr.data td.' + property );
+	},
+
+	findPreviousRowId: function( rowId ) {
+
+		var rows = this.getRows();
+		var length = rows.length;
+		for ( var i = 1; i < length; i++ )
+			if ( this.convertTrIdToRowId( rows[ i ].id ) == rowId )
+				return this.convertTrIdToRowId( rows[ i - 1 ].id );
+
+		return null;
+	},
+
+	findNextRowId: function( rowId ) {
+
+		var rows = this.getRows().reverse();
+		var length = rows.length;
+		for ( var i = 1; i < length; i++ )
+			if ( this.convertTrIdToRowId( rows[ i ].id ) == rowId )
+				return this.convertTrIdToRowId( rows[ i - 1 ].id );
+
+		return null;
+	},
+
+	/**
+	 * rowId로 행 객체(tr)를 구한다.
+	 *
+	 * @param rowId
+	 */
+	getRow: function( rowId ) {
+		return $( this._id + '_' + rowId );
+	},
+
+	/**
+	 * 추가된 행인지 검사한다.
+	 *
+	 * @param rowId
+	 * @return 추가된 행이면 true, 아니면 false
+	 */
+	isAddedRow: function( rowId ) {
+		return this.getRow( rowId ).hasClassName( 'added' );
+	},
+
+	/**
+	 * 수정된 행인지 검사한다.
+	 *
+	 * @param rowId
+	 * @return 수정된 행이면 true, 아니면 false
+	 */
+	isModifiedRow: function( rowId ) {
+		return this.getRow( rowId ).hasClassName( 'modified' );
+	},
+
+	/**
+	 * 삭제된 행인지 검사한다.
+	 *
+	 * @param rowId
+	 * @return 삭제된 행이면 true, 아니면 false
+	 */
+	isDeletedRow: function( rowId ) {
+		return this.getRow( rowId ).hasClassName( 'deleted' );
+	},
+
+	/**
+	 * rowId와 컬럼 property로 셀 객체(td)를 구한다.
+	 *
+	 * @param rowId
+	 * @param property
+	 */
+	getCell: function( rowId, property ) {
+
+		var cell = null;
+
+		$$( 'div#' + this._id + ' tr#' + this._id + '_' + rowId + ' td.' + property ).each(
+			function( item ) {
+				cell = item;
+			}
+		);
+
+		return cell;
+	},
+
+	/**
+	 * rowId로 행 객체(tr) 내의 모든 편집 필드의 목록을 구한다.
+	 * 편집 필드는 input, select, textarea 등을 의미한다.
+	 *
+	 * @param rowId
+	 * @return 편집 필드 객체의 배열, 행이 없으면 null
+	 */
+	getRowEditors: function( rowId ) {
+
+		var row = this.getRow( rowId );
+		if ( row == null ) return null;
+
+		var thisObj = this;
+
+		return row.descendants().findAll(
+			function( item ) {
+				return thisObj.isEditor( item );
+			}
+		);
+	},
+
+	/**
+	 * rowId와 컬럼 property로 셀 객체(td) 내의 편집 필드를 구한다.
+	 * 편집 필드는 input, select, textarea 등을 의미한다.
+	 *
+	 * @param rowId
+	 * @param property
+	 * @return 편집 필드 객체, 셀이 없거나 편집 필드가 없으면 null
+	 */
+	getCellEditor: function( rowId, property ) {
+
+		var cell = this.getCell( rowId, property );
+		if ( cell == null ) return null;
+
+		var des = cell.descendants();
+		var length = des.length;
+		for ( var i = 0; i < length; i++ )
+			if ( this.isEditor( des[ i ] ) ) return des[ i ];
+
+		return null;
+	},
+
+	isEditor: function( element ) {
+
+		if ( element.disabled ) return false;
+
+		if ( element.tagName == 'INPUT' ) return true;
+		if ( element.tagName == 'SELECT' ) return true;
+		if ( element.tagName == 'TEXTAREA' ) return true;
+
+		return false;
+	},
+
+	/**
+	 * 셀의 값을 구한다.
+	 *
+	 * @param rowId 셀의 rowId
+	 * @param property 셀의 property
+	 * @return 셀의 값
+	 */
+	getValue: function( rowId, property ) {
+		return this.getCell( rowId, property ).getAttribute( 'currentValue' );
+	},
+
+	/**
+	 * 셀의 원래 값을 구한다.
+	 * 셀의 값을 수정했을 경우 수정하기 이전의 값을 구한다.
+	 *
+	 * @param rowId 셀의 rowId
+	 * @param property 셀의 property
+	 * @return 셀의 원래 값
+	 */
+	getOriginalValue: function( rowId, property ) {
+		return this.getCell( rowId, property ).getAttribute( 'originalValue' );
+	},
+
+	/**
+	 * 셀의 화면에 표시되는 값을 구한다.
+	 * 실제 셀에 들어있는 값이 아닌 Renderer를 통해 가공된 값이다.
+	 *
+	 * @param rowId 셀의 rowId
+	 * @param property 셀의 property
+	 * @return 셀의 화면에 표시되는 값
+	 */
+	getRenderedValue: function( rowId, property ) {
+		return this.getCell( rowId, property ).innerHTML;
+	},
+
+	/**
+	 * 셀의 값을 지정한다.
+	 *
+	 * @param rowId 셀의 rowId
+	 * @param property 셀의 property
+	 * @param value 셀의 값
+	 */
+	setValue: function( rowId, property, value, asyncYn ) {
+		this.getCell( rowId, property ).setAttribute( 'currentValue', value );
+		Utils._setFieldValue( this._bindings.get( property ), value );
+		this.refreshCell( rowId, property, asyncYn );
+		this.refreshRowStatus( rowId );
+	},
+
+	refreshCell: function( rowId, property, asyncYn ) {
+		if (asyncYn == null ) asyncYn = this._refreshCellAsyncYn;
+		var row = this.getRow( rowId );
+		var cell = this.getCell( rowId, property );
+		var valueProperty = this._rowsProperty + '[0].' + cell.className;
+		var paramsHash = $H( this._recentParams );
+		var cellHash = this.getCellsObject(rowId);
+		paramsHash.set( 'id', this._id );
+		paramsHash.set( 'columnsProperty', this._columnsProperty );
+		paramsHash.set( 'columnProperty', cell.className );
+		paramsHash.set( 'valueProperty', valueProperty );
+		paramsHash.set( valueProperty, cell.getAttribute( 'currentValue' ) );
+		paramsHash.set( 'addedRow', row.hasClassName( 'added' ) );
+		paramsHash.set( 'rowsProperty', this._rowsProperty );
+		paramsHash.update(cellHash);
+		new Ajax.Request(
+			this._renderCellUrl,
+			{
+				method: 'post',
+				parameters: paramsHash.toQueryString(),
+				asynchronous: asyncYn,
+				onComplete: function( transport ) {
+					cell.update( transport.responseText );
+				}
+			}
+		);
+	},
+	getCellsObject: function( rowId ) {
+		var thisObj = this;
+		var row = thisObj.getRow( rowId );
+		var cells = row.childElements();
+		var cellHash = $H();
+		cells.each( function( cell, idx ) {
+			if ( cell.className == 'no' || cell.className == 'checked' ) return;
+			cellHash.set( thisObj._rowsProperty + '[0].' + cell.className, cell.getAttribute( 'currentValue' ) );
+		});
+		return cellHash;
+	},
+	refreshRowStatus: function( rowId ) {
+
+		var modified = false;
+
+		var row = this.getRow( rowId );
+
+		if ( row.hasClassName( 'added' ) || row.hasClassName( 'deleted' ) ) return;
+
+		var cells = row.childElements();
+		for ( var i = 0; i < cells.length; i++ ) {
+			var cell = cells[ i ];
+			var currentValue = cell.getAttribute( 'currentValue' );
+			var originalValue = cell.getAttribute( 'originalValue' );
+
+			if ( currentValue != originalValue ) modified = true;
+		}
+
+		if ( modified )
+			row.addClassName( 'modified' );
+		else
+			row.removeClassName( 'modified' );
+	},
+
+	clearAllRowStatus: function() {
+
+		var thisObj = this;
+		var tbody = $$( 'div#' + this._id + ' div.data table' )[ 0 ];
+
+		$$( 'div#' + this._id + ' div.data table tr' ).each(
+			function( item ) {
+
+				if ( item.hasClassName( 'modified' ) ) {
+					item.removeClassName( 'modified' );
+
+					var cells = item.childElements();
+					var length = cells.length;
+					for ( var i = 0; i < length; i++ ) cells[ i ].setAttribute( 'originalValue', cells[ i ].getAttribute( 'currentValue' ) );
+				}
+
+				if ( item.hasClassName( 'added' ) ) {
+					item.removeClassName( 'added' );
+
+					$$( 'div#' + thisObj._id + ' tr#' + item.id + ' td' ).each(
+						function( cell ) {
+							if ( cell.className == 'no' || cell.className == 'checked' ) return;
+							thisObj.refreshCell( thisObj.convertTrIdToRowId( item.id ), cell.className );
+						}
+					);
+				}
+
+				if ( item.hasClassName( 'deleted' ) )
+					tbody.deleteRow( item.rowIndex );
+			}
+		);
+	},
+
+	applyChanging: function( property, fieldId ) {
+
+		var rowId = this.getRowIdOfEditor( fieldId );
+
+		this.getCell( rowId, property ).setAttribute( 'currentValue', Utils.getFieldValue( fieldId ) );
+		this.applyBinding();
+		this.refreshRowStatus( rowId );
+	},
+
+	getRowIdOfEditor: function( fieldId ) {
+
+		var field = $( fieldId );
+
+		return this.convertTrIdToRowId( field.up( 'tr.data' ).id );
+	},
+
+	selectRowOfEditor: function( fieldId ) {
+		var rowId = this.getRowIdOfEditor( fieldId );
+		if ( rowId != this.getSelectedRowId() ) this.selectRow( rowId );
+	},
+
+	/**
+	 * 지정한 행을 선택한다.
+	 *
+	 * @param rowId 선택할 행의 rowId
+	 */
+	selectRow: function( rowId, eventCancelYn ) {		//
+
+		if (eventCancelYn == null) eventCancelYn = false;
+		if ( rowId != null && !this.executeHandlerOnRowSelecting( rowId ) ) return;
+
+		var row = this.getRow( rowId );
+		var prevRow = this.getRow( this._selectedRowId );
+		if ( prevRow != null ) prevRow.removeClassName( 'selected' );
+
+		this._selectedRowId = rowId;
+		if ( row == null ) return;
+		this.applyBinding();
+		row.addClassName( 'selected' );
+
+
+		// Scroll to selected row
+		var gridHeight = this._gridDiv.down( 'div.data' ).offsetHeight;
+		var titleHeight = this._gridDiv.down( 'div.title' ).offsetHeight;
+		var gridScrollTop = this.getScrollTop();
+
+		if ( gridScrollTop + gridHeight < row.offsetTop + row.offsetHeight )
+			this.setScrollTop( row.offsetTop + row.offsetHeight - gridHeight + 1 );
+		else if ( titleHeight > row.offsetTop - gridScrollTop )
+			this.setScrollTop( row.offsetTop - titleHeight + 1 );
+		if(!eventCancelYn) {
+			this.executeHandlerOnRowClick( rowId );
+			if ( row != prevRow ) this.executeHandlerOnRowChanged( rowId );
+		}
+	},
+
+	/**
+	 * 페이지를 이동한다.
+	 *
+	 * @param page 페이지 번호
+	 */
+	selectPage: function( page ) {
+
+		if ( !this.executeHandlerOnPageChanging( page ) ) return;
+
+		this.load( this._recentParams, page );
+	},
+
+	/**
+	 * 현재 페이지를 구한다.
+	 *
+	 * @return 페이지 번호
+	 */
+	getPage: function() {
+		return this._page;
+	},
+
+	/**
+	 * 세로 스크롤바의 위치를 구한다.
+	 *
+	 * @return 세로 스크롤바의 위치
+	 */
+	getScrollTop: function() {
+		return $$( 'div#' + this._id + ' div.data' )[ 0 ].scrollTop;
+	},
+
+	/**
+	 * 세로 스크롤바의 위치를 지정한다.
+	 *
+	 * @param scrollTop 세로 스크롤바의 위치
+	 */
+	setScrollTop: function( scrollTop ) {
+		$$( 'div#' + this._id + ' div.data' )[ 0 ].scrollTop = scrollTop;
+	},
+
+	/**
+	 * 가로 스크롤바의 위치를 구한다.
+	 *
+	 * @return 가로 스크롤바의 위치
+	 */
+	getScrollLeft: function() {
+		return $$( 'div#' + this._id + ' div.data' )[ 0 ].scrollLeft;
+	},
+
+	/**
+	 * 가로 스크롤바의 위치를 지정한다.
+	 *
+	 * @param scrollLeft 가로 스크롤바의 위치
+	 */
+	setScrollLeft: function( scrollLeft ) {
+		$$( 'div#' + this._id + ' div.data' )[ 0 ].scrollLeft = scrollLeft;
+	},
+
+	/**
+	 * 행의 수를 구한다.
+	 *
+	 * @return 행의 수
+	 */
+	getRowCount: function() {
+		return this._rowCount;
+	},
+
+	/**
+	 * 현재 선택된 행의 rowId를 구한다.
+	 *
+	 * @return rowId
+	 */
+	getSelectedRowId: function() {
+		return this._selectedRowId;
+	},
+
+	/**
+	 * load 메소드가 실행된 후 실행될 핸들러를 지정한다.
+	 *
+	 * @param handler 핸들러
+	 */
+	setHandlerOnLoad: function( handler ) {
+		this._onLoad = handler;
+	},
+
+	executeHandlerOnLoad: function() {
+//		setStyle( 'div#' + this._id + ' table colgroup ', { display: 'none' } );
+//		setStyle( 'div#' + this._id + ' table th ', { display: 'none' } );
+//		setStyle( 'div#' + this._id + ' table td ', { display: 'none' } );
+//		if(this._checkable) {
+//			setStyle( 'div#' + this._id + ' table .checked', { display: '' } );
+//		}
+//		setStyle( 'div#' + this._id + ' table .cde', { display: '' } );
+//		setStyle( 'div#' + this._id + ' table .kor_nm', { display: '' } );
+//		setStyle( 'div#' + this._id + ' table .prt_ordr', { display: '' } );
+		if ( this._onLoad != null ) this._onLoad();
+	},
+
+	/**
+	 * 특정 행을 선택 시도할때 실행될 핸들러를 지정한다.
+	 * 이 핸들러는 행이 선택되기 전에 실행되며, true/false를 리턴해야 한다.
+	 * 핸들러가 false를 리턴하면 페이지는 변경되지 않는다.
+	 *
+	 * @param handler 핸들러
+	 */
+	setHandlerOnRowSelecting: function( handler ) {
+		this._onRowSelecting = handler;
+	},
+
+	executeHandlerOnRowSelecting: function( rowId ) {
+		if ( this._onRowSelecting == null ) return true;
+		return this._onRowSelecting( rowId );
+	},
+
+	/**
+	 * 특정 행을 클릭하면 실행될 핸들러를 지정한다.
+	 *
+	 * @param handler 핸들러
+	 */
+	setHandlerOnRowClick: function( handler ) {
+		this._onRowClick = handler;
+	},
+
+	executeHandlerOnRowClick: function( rowId ) {
+		if ( this._onRowClick != null ) this._onRowClick( rowId );
+	},
+
+	/**
+	 * 특정 행을 더블클릭하면 실행될 핸들러를 지정한다.
+	 *
+	 * @param handler 핸들러
+	 */
+	setHandlerOnRowDblClick: function( handler ) {
+		this._onRowDblClick = handler;
+	},
+
+	executeHandlerOnRowDblClick: function( rowId ) {
+		if ( this._onRowDblClick != null ) this._onRowDblClick( rowId );
+	},
+
+	/**
+	 * 선택된 행이 변경되면 실행될 핸들러를 지정한다.
+	 *
+	 * @param handler 핸들러
+	 */
+	setHandlerOnRowChanged: function( handler ) {
+		this._onRowChanged = handler;
+	},
+
+	executeHandlerOnRowChanged: function( rowId ) {
+		if ( this._onRowChanged != null ) this._onRowChanged( rowId );
+	},
+
+	/**
+	 * 페이지를 변경 시도할 때 실행될 핸들러를 지정한다.
+	 * 이 핸들러는 페이지가 변경되기 전에 실행되며, true/false를 리턴해야 한다.
+	 * 핸들러가 false를 리턴하면 페이지는 변경되지 않는다.
+	 *
+	 * @param handler 핸들러
+	 */
+	setHandlerOnPageChanging: function( handler ) {
+		this._onPageChanging = handler;
+	},
+
+	executeHandlerOnPageChanging: function( page ) {
+		if ( this._onPageChanging == null ) return true;
+		return this._onPageChanging( page );
+	},
+	/**
+	 * 그리드 정렬을 시도할 때 실행될 핸들러를 지정한다.
+	 * 이 핸들러는 그리드가 정렬 되기 전에 실행되며, true/false를 리턴해야 한다.
+	 * 핸들러가 false를 리턴하면 그리드는 변경되지 않는다.
+	 *
+	 * @param handler 핸들러
+	 */
+	setHandlerOnGridSorting: function( handler ) {
+		this._onGridSorting = handler;
+	},
+
+	executeHandlerOnSorting: function( colProperty, desc ) {
+		if ( this._onGridSorting == null ) return true;
+		return this._onGridSorting( colProperty, desc );
+	},
+	/**
+	 * 특정 행의 체크박스를 체크/언체크하면 실행될 핸들러를 지정한다.
+	 *
+	 * @param handler 핸들러
+	 */
+	setHandlerOnRowChecked: function( handler ) {
+		this._onRowChecked = handler;
+	},
+
+	executeHandlerOnRowChecked: function( rowId, checked ) {
+		if ( this._onRowChecked != null ) this._onRowChecked( rowId, checked );
+	},
+	/**
+	 * 그리드의 스크롤을 움직였을 때 실행되는 핸들러를 지정한다.
+	 *
+	 * @param handler 핸들러
+	 */
+	setHandlerOnScroll: function( handler ) {
+		//alert(Object.inspect(handler));
+		this._onGridScroll = handler;
+	},
+	/**
+	 * 그리드에 스크롤 이벤트를 추가한다.
+	 *
+	 * @param
+	 */
+	setGridEventScroll: function() {
+		var thisObj = this;
+		$$('div#' + thisObj._id + ' div.data')[0].observe('scroll', thisObj._onGridScroll);
+	},
+	checkAll: function( checked, colId ) {
+		var customCheckBoxYn = colId == null ? false : true;
+		if ( !customCheckBoxYn ) colId = 'checked';
+		var expr = "";
+		var thisObj = this;
+		if (checked) expr = 'div#'+thisObj._id +' td.'+colId+' input.'+colId+':not(:checked)';
+		else 		   expr = 'div#'+thisObj._id +' td.'+colId+' input.'+colId+':checked';
+		 $$(expr).each(function(checkbox, idx){
+				if ( checkbox.disabled ) return;
+				if ( !customCheckBoxYn ) checkbox.checked = checked;
+				else 						   thisObj.setValue(idx, colId, checked, true);
+				thisObj.executeHandlerOnRowChecked( thisObj.convertTrIdToRowId( thisObj._id+'_'+idx ), checked );
+		 });
+		 /*
+		this.eachRow(
+			function( rowId, row ) {
+				var checkbox = row.down( 'td.checked input' );
+				if ( checkbox.disabled ) return;
+				checkbox.checked = checked;
+
+				thisObj.executeHandlerOnRowChecked( thisObj.convertTrIdToRowId( row.id ), checked );
+			}
+		);*/
+	},
+	checkAllBoxInsertInHeader: function(colId) {
+		var thisObj = this;
+		var html = '<input type=\"checkbox\" class=\"'+colId+'\" onclick=\"'+thisObj._id+'.checkAll(this.checked,\''+colId+'\');\" />';
+		$$('div#'+thisObj._id+' th.'+colId).invoke('update',html);
+	},
+	check: function( rowId, colId ) {
+		if ( colId == null ) colId = 'checked';
+		//var existUnchecked = false;
+//		var thisObj = this;
+/*
+		this.eachRow(
+			function( rowId, row ) {
+				var checkbox = row.down( 'td.checked input' );
+				if ( checkbox.disabled ) return;
+				if ( !checkbox.checked ) existUnchecked = true;
+			}
+		);
+*/
+		//var checkbox = thisObj.getRow(rowId).down( 'td.checked input' );
+
+		$( this._id + '_'+colId ).checked = $$('div#'+this._id +' td.'+colId+' input.'+colId+'').all(function(item){ return item.checked; });
+
+		this.executeHandlerOnRowChecked( rowId, this.isChecked( rowId ) );
+	},
+
+	/**
+	 * 해당 행의 체크박스가 체크된 상태인지 검사한다.
+	 *
+	 * @param rowId
+	 */
+	isChecked: function( rowId, colId ) {
+		if ( colId == null ) colId = 'checked';
+		return this.getCellEditor( rowId, colId ).checked;
+	},
+
+	/**
+	 * 해당 행의 체크박스를 체크/언체크한다.
+	 *
+	 * @param rowId
+	 * @param checked true(체크됨), false(언체크됨)
+	 */
+	setChecked: function( rowId, checked ) {
+		this.getCellEditor( rowId, 'checked' ).checked = checked;
+		this.check( rowId );
+	},
+
+	/**
+	 * 체크된 행들의 rowId들을 구한다.
+	 *
+	 * @return rowId의 배열
+	 */
+	getCheckedRowIds: function( colId, disabledYn ) {
+		if ( colId == null ) colId = 'checked';
+		if ( !this._checkable && colId == null ) return null;
+
+		var thisObj = this;
+
+		var checked = $$( 'div#' + this._id + ' div.data tr.data' ).findAll(
+			function( row ) {
+				if ( row.hasClassName( 'deleted' ) ) return false;
+				var checkbox = row.down( 'td.' + colId + ' input' );
+//				if ( checkbox.disabled ) return false;
+				if (disabledYn == null || disabledYn == false)
+					if ( checkbox.disabled ) return false;
+				return checkbox.checked;
+			}
+		);
+		return checked.collect( function( row ) { return thisObj.convertTrIdToRowId( row.id ); } );
+	},
+
+	/**
+	 * 새 행을 추가한다.
+	 *
+	 * @return 추가된 행의 rowId
+	 */
+	addRow: function() {
+
+		var tbody = $$( 'div#' + this._id + ' div.data table' )[ 0 ];
+		var emptyRow = $$( 'div#' + this._id + ' div.data table tr.emptyResult' )[ 0 ];
+		var newRowId = $$( 'div#' + this._id + ' div.data tr.data' ).length;
+		var thisObj = this;
+
+		while(this.getRow(newRowId)!=null){
+			 newRowId=newRowId+1;
+		}
+
+		// 데이터가 없을 때 추가하면, emptyMessage 부분을 삭제한다.
+		if ( emptyRow != null ) tbody.deleteRow( emptyRow.rowIndex );
+
+		var newRow = '';
+		newRow += '<tr id="' + this._id + '_' + newRowId + '" class="data added" onclick="' + this._id + '.selectRow( ' + newRowId + ' );" ondblclick="' + this._id + '.executeHandlerOnRowDblClick( ' + newRowId + ' );">';
+		$$( 'div#' + this._id + ' div.title table col' ).each(
+			function( item ) {
+				if ( item.className == 'checked' )
+					newRow += '<td class="checked"><input type="checkbox" class="checked"/></td>';
+				else if ( item.className == 'no' ) {
+					newRow += '<td class="no">';
+					newRow += thisObj._paged ? ( thisObj._page - 1 ) * thisObj._rowCountPerPage + newRowId + 1 : newRowId + 1;
+					newRow += '</td>';
+				}
+				else
+					newRow += '<td class="' + item.className + '" currentValue="" originalValue="">&nbsp;</td>';
+			}
+		);
+		newRow += '</tr>';
+
+		Element.insert( tbody, { bottom: newRow } );
+
+		this._rowCount++;
+
+		return newRowId;
+	},
+	/**
+	 * 새 행을 삽입한다.
+	 *
+	 * @return 추가된 행의 rowId
+	 */
+	insertRow: function() {
+
+		var tbody = $$( 'div#' + this._id + ' div.data tr.data' )[ 0 ];
+		var emptyRow = $$( 'div#' + this._id + ' div.data table tr.emptyResult' )[ 0 ];
+		var newRowId = $$( 'div#' + this._id + ' div.data tr.data' ).length;
+		var thisObj = this;
+
+		while(this.getRow(newRowId)!=null){
+			 newRowId=newRowId+1;
+		}
+
+		// 데이터가 없을 때 추가하면, emptyMessage 부분을 삭제한다.
+		if ( emptyRow != null ) tbody.deleteRow( emptyRow.rowIndex );
+
+		var newRow = '';
+		newRow += '<tr id="' + this._id + '_' + newRowId + '" class="data added" onclick="' + this._id + '.selectRow( ' + newRowId + ' );" ondblclick="' + this._id + '.executeHandlerOnRowDblClick( ' + newRowId + ' );">';
+		$$( 'div#' + this._id + ' div.title table col' ).each(
+			function( item ) {
+				if ( item.className == 'checked' )
+					newRow += '<td class="checked"><input type="checkbox" class="checked"/></td>';
+				else if ( item.className == 'no' ) {
+					newRow += '<td class="no">';
+					newRow += thisObj._paged ? ( thisObj._page - 1 ) * thisObj._rowCountPerPage + newRowId + 1 : newRowId + 1;
+					newRow += '</td>';
+				}
+				else
+					newRow += '<td class="' + item.className + '" currentValue="" originalValue="">&nbsp;</td>';
+			}
+		);
+		newRow += '</tr>';
+
+		Element.insert( tbody, { top: newRow } );
+
+		this._rowCount++;
+
+		return newRowId;
+	},
+	/**
+	 * 행을 삭제한다.
+	 *
+	 * @param rowId 삭제할 행의 rowId
+	 */
+	deleteRow: function( rowId, autoPrevRowYn ) {
+		if(autoPrevRowYn ==null) autoPrevRowYn = false;
+		var row = this.getRow( rowId );
+		if ( row == null ) return;
+
+		if ( row.hasClassName( 'added' ) ) {
+			// 실제로 삭제한다.
+			var tbody = $$( 'div#' + this._id + ' div.data table' )[ 0 ];
+			tbody.deleteRow( row.rowIndex );
+		}
+		else {
+			row.removeClassName( 'modified' );
+			row.addClassName( 'deleted' );
+		}
+
+		if ( this._selectedRowId == rowId ) this.selectRow( null );
+		if (autoPrevRowYn && rowId != 0) this.selectRow(rowId-1);
+
+		this._rowCount--;
+	},
+
+	/**
+	 * 그리드의 컬럼과 입력 필드를 연결한다.
+	 *
+	 * @param property 컬럼 property
+	 * @param fieldId 입력 필드 객체 또는 필드의 ID
+	 */
+	bind: function( property, fieldId ) {
+
+		if ( property.endsWith( '_' ) ) return;
+
+		var field = $( fieldId );
+		var thisObj = this;
+
+		this._bindings.set( property, field );
+
+		Utils.observeChange( fieldId,
+			function() {
+				thisObj.setValue( thisObj.getSelectedRowId(), property, Utils.getFieldValue( field ) );
+			}
+		);
+	},
+
+	/**
+	 * 그리드의 컬럼과 입력 필드간의 연결을 제거한다.
+	 *
+	 * @param property 컬럼 property
+	 */
+	unbind: function( property ) {
+
+		if ( property.endsWith( '_' ) ) return;
+
+		var field = this._bindings.unset( property );
+
+		Utils.stopObservingChange( field );
+	},
+
+	/**
+	 * 그리드와 입력 폼을 연결한다.
+	 * 그리드의 각 컬럼과 입력 폼의 각 필드가 자동으로 연결된다.
+	 * 컬럼의 property와 입력 필드의 name이 같은 것끼리 연결된다.
+	 *
+	 * @param formId 폼 객체 또는 폼의 ID
+	 */
+	bindForm: function( formId ) {
+
+		var thisObj = this;
+		this._bindings = $H();
+
+		$( formId ).getElements().each(
+			function( item ) {
+				thisObj.bind( item.name, item );
+			}
+		);
+	},
+
+	/**
+	 * 그리드와 입력 폼을 연결해제 한다.
+	 * 그리드의 각 컬럼과 입력 폼의 각 필드가 연결해제 된다.
+	 * 컬럼의 property와 입력 필드의 name이 같은 것끼리 연결된다.
+	 *
+	 * @param formId 폼 객체 또는 폼의 ID
+	 */
+	unbindForm: function( formId ) {
+
+//		var thisObj = this;
+		this._bindings = $H();
+
+		$( formId ).getElements().each(
+			function( item ) {
+				Utils.stopObservingChange( item.name );
+			}
+		);
+	},
+
+	applyBinding: function( rowId ) {
+
+		if ( rowId == null ) rowId = this.getSelectedRowId();
+		var thisObj = this;
+		var table = this._gridDiv.down( 'div.title' ).down( 'table' );
+
+		this._bindings.each(
+			function( pair ) {
+
+				// pair.key가 property 목록에 없으면
+				if ( table.down( 'col.' + pair.key ) == null ) return;
+
+				var fieldValue = '';
+				var fieldEditable = false;
+				if ( rowId != null ) {
+					fieldValue = thisObj.getValue( rowId, pair.key );
+					fieldEditable = Utils.isEditableOnModify( pair.value ) || thisObj.getRow( rowId ).hasClassName( 'added' );
+				}
+
+				Utils._setFieldValue( pair.value, fieldValue );
+				Utils._setEditable( pair.value, fieldEditable );
+			}
+		);
+	},
+
+	createModifiedParams: function() {
+
+		var paramsHash = $H();
+		var addedIndex = 0, modifiedIndex = 0, deletedIndex = 0;
+		var thisObj = this;
+
+		$$( 'div#' + this._id + ' tr.added' ).each(
+			function( row ) {
+				var cells = row.childElements();
+				var length = cells.length;
+				for ( var i = 0; i < length; i++ ) {
+					var cell = cells[ i ];
+					if ( cell.className == 'no' || cell.className == 'checked' ) continue;
+					paramsHash.set( thisObj._addedRowsProperty + '[' + addedIndex + '].' + cell.className, cell.getAttribute( 'currentValue' ) );
+				}
+				addedIndex++;
+			}
+		);
+
+		$$( 'div#' + this._id + ' tr.modified' ).each(
+			function( row ) {
+				var cells = row.childElements();
+//				var length = cells.length;
+				for ( var i = 0; i < cells.length; i++ ) {
+					var cell = cells[ i ];
+					if ( cell.className == 'no' || cell.className == 'checked' ) continue;
+					paramsHash.set( thisObj._modifiedRowsProperty + '[' + modifiedIndex + '].' + cell.className, cell.getAttribute( 'currentValue' ) );
+				}
+				modifiedIndex++;
+			}
+		);
+
+		$$( 'div#' + this._id + ' tr.deleted' ).each(
+			function( row ) {
+				var cells = row.childElements();
+//				var length = cells.length;
+				for ( var i = 0; i < cells.length; i++ ) {
+					var cell = cells[ i ];
+					if ( cell.className == 'no' || cell.className == 'checked' ) continue;
+					paramsHash.set( thisObj._deletedRowsProperty + '[' + deletedIndex + '].' + cell.className, cell.getAttribute( 'currentValue' ) );
+				}
+				deletedIndex++;
+			}
+		);
+
+		return paramsHash;
+	},
+
+	/**
+	 * 그리드에 변경된 값이 있는지 검사한다.
+	 *
+	 * @return
+	 * true : 하나라도 변경된 값이 있을 경우
+	 * false : 변경된 값이 하나도 없는 경우
+	 */
+	isDirty: function() {
+		return this.createModifiedParams().size() > 0;
+	},
+
+	/**
+	 * 그리드에서 수정된 데이터를 저장한다.
+	 * 오류 발생시(0, -1 외의 값이 리턴될 경우)에는 자동으로 오류 메시지가 보여지기 때문에
+	 * 별도의 작업을 할 필요가 없다.
+	 *
+	 * @param params 저장에 필요한 추가 파라미터(JSON)
+	 * @return
+	 * 0 : 성공적으로 저장되었을 경우
+	 * -1 : 그리드에 수정된 데이터가 없을 경우
+	 * 그 외의 값 : 오류(Exception 또는 Validation 실패)
+	 */
+	save: function( params ) {
+
+		var thisObj = this;
+		var paramsHash = this.createModifiedParams();
+
+		if ( paramsHash.size() == 0 ) return -1;
+
+		if ( params != null ) paramsHash = paramsHash.merge( params );
+
+		var success = false;
+		new Ajax.Request(
+			this._saveUrl,
+			{
+				method: 'post',
+				parameters: paramsHash.toQueryString(),
+				asynchronous: false,
+				onSuccess: function( transport ) {
+					var response = new JSONResponse( transport );
+
+					if ( response.hasErrors() ) {
+						var field = response.showErrors();
+
+						// Validation 오류가 아니라면 field가 null이다.
+						if ( field != null ) {
+							var match = /\[([^\[\]]+)\]\.(.+)/.exec( field );
+							var rowIndex = match[ 1 ];
+							var rowId;
+
+							// 오류가 발생한 row를 찾는다.
+							if ( field.startsWith( thisObj._addedRowsProperty ) )
+								rowId = thisObj.convertTrIdToRowId( $$( 'div#' + thisObj._id + ' tr.added' )[ rowIndex ].id );
+							else
+								rowId = thisObj.convertTrIdToRowId( $$( 'div#' + thisObj._id + ' tr.modified' )[ rowIndex ].id );
+
+							if ( thisObj.getSelectedRowId() != rowId ) thisObj.selectRow( rowId );
+
+							Utils.focus( thisObj._bindings.get( match[ 2 ] ) );
+						}
+					}
+					else {
+						thisObj.clearAllRowStatus();
+						thisObj.applyBinding();
+						success = true;
+					}
+				}
+			}
+		);
+
+		return success ? 0 : 100;
+	},
+
+	/**
+	 * 그리드에서 수정된 데이터를 저장한다.
+	 * 오류 발생시(0, -1 외의 값이 리턴될 경우)에는 자동으로 오류 메시지가 보여지기 때문에
+	 * 별도의 작업을 할 필요가 없다.
+	 *
+	 * @param params 저장에 필요한 추가 파라미터(JSON)
+	 * @return
+	 * 0 : 성공적으로 저장되었을 경우
+	 * -1 : 그리드에 수정된 데이터가 없을 경우
+	 * 그 외의 값 : 오류(Exception 또는 Validation 실패)
+	 */
+	saveGetValue: function( params ) {
+
+		var thisObj = this;
+		var paramsHash = this.createModifiedParams();
+
+		if ( paramsHash.size() == 0 ) return -1;
+
+		if ( params != null ) paramsHash = paramsHash.merge( params );
+
+		var success = false;
+		var returnStr = null;
+		new Ajax.Request(
+			this._saveUrl,
+			{
+				method: 'post',
+				parameters: paramsHash.toQueryString(),
+				asynchronous: false,
+				onSuccess: function( transport ) {
+					var response = new JSONResponse( transport );
+
+					if ( response.hasErrors() ) {
+						var field = response.showErrors();
+
+						// Validation 오류가 아니라면 field가 null이다.
+						if ( field != null ) {
+							var match = /\[([^\[\]]+)\]\.(.+)/.exec( field );
+							var rowIndex = match[ 1 ];
+							var rowId;
+
+							// 오류가 발생한 row를 찾는다.
+							if ( field.startsWith( thisObj._addedRowsProperty ) )
+								rowId = thisObj.convertTrIdToRowId( $$( 'div#' + thisObj._id + ' tr.added' )[ rowIndex ].id );
+							else
+								rowId = thisObj.convertTrIdToRowId( $$( 'div#' + thisObj._id + ' tr.modified' )[ rowIndex ].id );
+
+							if ( thisObj.getSelectedRowId() != rowId ) thisObj.selectRow( rowId );
+
+							Utils.focus( thisObj._bindings.get( match[ 2 ] ) );
+						}
+					}
+					else {
+						thisObj.clearAllRowStatus();
+						thisObj.applyBinding();
+						if(transport.responseText != null && transport.responseText != '') {
+							returnStr = transport.responseText;
+						}
+						success = true;
+					}
+				}
+			}
+		);
+		if (returnStr!=null ) return returnStr;
+		return success ? 0 : 100;
+	},
+
+	/**
+	 * 그리드의 수정된 데이터를 모두 취소한다.
+	 * 수정하기 전 처음 load 했던 상태로 되돌린다.
+	 */
+	reset: function() {
+		this.renderContent();
+	},
+
+	convertTrIdToRowId: function( trId ) {
+		return trId.substring( this._id_len + 1 );
+	},
+
+	/**
+	 * 특정 컬럼을 안보이게 숨긴다.
+	 *
+	 * @param colProperty 컬럼 property
+	 */
+	hideColumn: function( colProperty ) {
+		setStyle( 'div#' + this._id + ' table col.' + colProperty, { display: 'none' } );
+	},
+
+	/**
+	 * 특정 컬럼을 보이게 한다.
+	 *
+	 * @param colProperty 컬럼 property
+	 */
+	showColumn: function( colProperty ) {
+		setStyle( 'div#' + this._id + ' table col.' + colProperty, { display: '' } );
+	},
+
+
+	/**
+	 * 테이블의 행을 순서대로 정렬한다. (서버에서)
+	 *
+	 * @param colProperty 정렬 기준으로 사용할 컬럼
+	 * @param desc true이면 내림차순, false이면 오름차순 정렬 (생략시에는 기본 오름차순, 이미 오름차순으로 정렬되어 있으면 내림차순)
+	 */
+	serverSortBy: function(colProperty, desc, type) {
+		if ( !this.executeHandlerOnSorting( colProperty, desc ) ) return;
+		if ( desc == null ) {
+			if ( this._sortingColumn == null || this._sortingColumn != colProperty )
+				this._sortingOrder = false;
+			else
+				this._sortingOrder = !this._sortingOrder;
+		}
+		this._sortingColumn = colProperty;
+		this.load( this._recentParams, this._page, colProperty );
+	},
+	/**
+	 * 테이블의 행을 순서대로 정렬한다. (클라이언트에서)
+	 *
+	 * @param colProperty 정렬 기준으로 사용할 컬럼
+	 * @param desc true이면 내림차순, false이면 오름차순 정렬 (생략시에는 기본 오름차순, 이미 오름차순으로 정렬되어 있으면 내림차순)
+	 */
+	sortBy: function( colProperty, desc, type ) {
+		if ( desc == null ) {
+			if ( this._sortingColumn == null || this._sortingColumn != colProperty )
+				desc = false;
+			else
+				desc = !this._sortingOrder;
+		}
+
+		this._gridDiv.setStyle( { cursor: 'wait' } );
+
+		var table = this._gridDiv.down( 'div.data table' );
+		var rows = table.rows;
+		var cellIndex = null;
+
+		var newRows = new Array();
+		var headerRowCount = 0;
+		var length = rows.length;
+		for ( var i = 0; i < length; i++ ) {
+			if ( rows[ i ].cells[ 0 ].tagName == 'TH' ) {
+				headerRowCount++;
+				continue;
+			}
+
+			// 첫행에서는 열의 인덱스를 찾는다.
+			if ( cellIndex == null )
+				var lennth = rows[ i ].cells.length;
+				for ( var j = 0; j < lennth; j++ )
+					if ( rows[ i ].cells[ j ].className == colProperty ) {
+						cellIndex = j;
+						break;
+					}
+
+			newRows[ i - headerRowCount ] = rows[ i ];
+		}
+		newRows.sort( function( row1, row2 ) {
+			var value1 = row1.cells[ cellIndex ].innerHTML;
+			var value2 = row2.cells[ cellIndex ].innerHTML;
+			if(type == 'number') {
+				value1 = Number(value1.replaceAll(',',''));
+				value2 = Number(value2.replaceAll(',',''));
+			}
+			if ( value1 == value2 ) return 0;
+			if ( value1 < value2 ) return -1;
+			return 1;
+		} );
+		if ( desc ) newRows.reverse();
+
+		// TODO 왜 테이블의 행들이 사라질까?
+		var newRowsLength = newRows.length;
+		for ( i = 0; i < newRowsLength; i++ ) table.tBodies[ 0 ].appendChild( newRows[ i ] );
+
+		this.refreshRowNumbers();
+
+		this._gridDiv.setStyle( { cursor: 'default' } );
+
+		// 컬럼 타이틀에 정렬됨을 표시
+		if ( this._sortingColumn != null && this._sortingColumn != colProperty )
+			this._gridDiv.down( 'div.title th.' + this._sortingColumn + ' span' ).update();
+
+		this._gridDiv.down( 'div.title th.' + colProperty + ' span' ).update( desc ? '▼' : '▲' );
+
+		this._sortingColumn = colProperty;
+		this._sortingOrder = desc;
+	},
+
+	/**
+	 * 행 번호를 다시 매긴다.
+	 */
+	refreshRowNumbers: function() {
+
+		if ( !this._showRowNumber ) return;
+
+		rows = $$( 'div#' + this._id + ' div.data tr.data' );
+		var length = rows.length;
+		for ( var i = 0; i < length; i++ )
+			rows[ i ].down( 'td.no' ).update( i + 1 );
+	},
+	/**
+	 * 칼럼명과 값으로 해당하는 첫번째 rowId를 가져온다.
+	 */
+	findRowId: function(cellId, value) {
+		thisObj = this;
+		var rowId = null;
+		var rows = $$('div#' + thisObj._id + '  tr[class!="data deleted"] td.'+cellId+'[innerHTML='+value+']');
+		if (rows.size() != 0)
+			rowId = thisObj.convertTrIdToRowId(rows.first().up('tr').id);
+		return rowId;
+	},
+	/**
+	 * 칼럼명과 값으로 해당하는 rowid를 모두를 배열로 가져온다.
+	 */
+	findRowIds: function(cellId, value) {
+		thisObj = this;
+		return $$('div#' + thisObj._id + '  tr[class!="data deleted"] td.'+cellId+'[innerHTML='+value+']').collect(function(obj) {
+		     return thisObj.convertTrIdToRowId(obj.up('tr').id);
+		});
+	},
+	/**
+	 * 페이지당 Row 건수 설정
+	 */
+	setRowCountPerPage: function(value) {
+		if (/[0-9]+/.test(value))
+			this._rowCountPerPage = value;
+	},
+	setCheckable: function( bool ) {
+		this._checkable = bool;
+	}
+} );

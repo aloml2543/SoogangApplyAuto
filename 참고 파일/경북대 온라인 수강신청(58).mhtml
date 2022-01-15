@@ -1,0 +1,977 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: http://sugang.knu.ac.kr/Sugang/cour/lectReq/onlineLectReq/list.action
+Subject: =?utf-8?Q?=EA=B2=BD=EB=B6=81=EB=8C=80=20=EC=98=A8=EB=9D=BC=EC=9D=B8=20=EC?=
+ =?utf-8?Q?=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD(58)?=
+Date: Thu, 12 Aug 2021 01:07:58 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--Q9WdeRekkdCr7BFIDIXmlwQzKmDkwODWzO4DR1SWO4----"
+
+
+------MultipartBoundary--Q9WdeRekkdCr7BFIDIXmlwQzKmDkwODWzO4DR1SWO4----
+Content-Type: text/html
+Content-ID: <frame-FCD7726A6964B619CEC212EE84FCAED4@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://sugang.knu.ac.kr/Sugang/cour/lectReq/onlineLectReq/list.action
+
+<!DOCTYPE html><html lang=3D"ko"><head><meta http-equiv=3D"Content-Type" co=
+ntent=3D"text/html; charset=3DUTF-8"><link rel=3D"stylesheet" type=3D"text/=
+css" href=3D"cid:css-0788182a-9826-46a0-840b-bed3ec4fce0e@mhtml.blink" />
+   =20
+    <meta http-equiv=3D"Content-Language" content=3D"ko">
+=09
+	<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3D11">
+=09
+=09
+=09
+=09
+	<!-- netfunnel =EC=A0=81=EC=9A=A9 20.11.10.-->
+=09
+
+	<!--[if lt IE 9]>
+    <script type=3D"text/javascript" charset=3D"UTF-8" src=3D"/Sugang/js/ht=
+ml5.js"></script>
+    <![endif]-->
+	<link rel=3D"stylesheet" href=3D"http://sugang.knu.ac.kr/Sugang/css/defaul=
+t.css" type=3D"text/css">
+	<link rel=3D"stylesheet" href=3D"http://sugang.knu.ac.kr/Sugang/css/grid.c=
+ss" type=3D"text/css">
+	<title>=EA=B2=BD=EB=B6=81=EB=8C=80 =EC=98=A8=EB=9D=BC=EC=9D=B8 =EC=88=98=
+=EA=B0=95=EC=8B=A0=EC=B2=AD(58)</title>
+
+=09
+=09
+</head>
+<body>
+	<div class=3D"wrap">
+	<button class=3D"dummy"></button>
+	<h2>=EC=98=A8=EB=9D=BC=EC=9D=B8=EC=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD
+</h2>
+	<div id=3D"logout">=20
+		<button class=3D"stop">=EC=A2=85=EB=A3=8C
+</button>
+		<button class=3D"langageButtonK">=ED=95=9C=EA=B5=AD=EC=96=B4</button>
+		<button class=3D"langageButtonE">English</button>
+
+<!-- 			<option value=3D"kor" label=3D"=ED=95=9C=EA=B5=AD=EC=96=B4" selecte=
+d=3D"selected"></option> -->
+<!-- 			<option value=3D"eng" label=3D"English"></option> -->
+
+		<div id=3D"timeStatus"></div>
+	</div>
+=09
+=09
+	<div id=3D"logout_info">=EC=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD =EC=A2=85=EB=
+=A3=8C =EC=8B=9C =EB=B0=98=EB=93=9C=EC=8B=9C <font class=3D"txt_violet_b">=
+=E2=80=9C=EC=A2=85=EB=A3=8C=E2=80=9D</font>=EB=B2=84=ED=8A=BC=EC=9D=84 =EB=
+=88=8C=EB=9F=AC=EC=A3=BC=EC=84=B8=EC=9A=94.</div>
+=09
+=09
+=09
+	<!-- =EB=B3=B8=EB=AC=B8=EC=8B=9C=EC=9E=91 -->
+	<div id=3D"content">
+=09
+=09
+=09
+=09
+=09
+	<!-- =EC=83=81=EC=84=B8 =EC=98=81=EC=97=AD -->
+	<div class=3D"pv_box">
+		<table class=3D"form">
+			<tbody><tr>
+				<th>=ED=95=99=EB=B2=88
+/=EC=84=B1=EB=AA=85
+</th>
+				<td width=3D"200px">
+				<input class=3D"size70px disabled" type=3D"text" id=3D"stu_nbr" name=3D=
+"stu_nbr" value=3D"2019114538" contant=3D"true" title=3D"=ED=95=99=EB=B2=88=
+" readonly=3D"">
+			=09
+				<input class=3D"size100px disabled" type=3D"text" id=3D"kor_nm" name=3D=
+"kor_nm" value=3D"=EC=84=9C=EB=AA=85=EC=9B=90" contant=3D"true" title=3D"=
+=EC=84=B1=EB=AA=85" readonly=3D"">
+			=09
+			=09
+				</td>
+				<th>=EC=86=8C=EC=86=8D
+</th>
+				<td>
+				<input class=3D"size95 disabled" type=3D"text" id=3D"pstn_crse_cde_nm" =
+name=3D"pstn_crse_cde_nm" value=3D"IT=EB=8C=80=ED=95=99 =EC=BB=B4=ED=93=A8=
+=ED=84=B0=ED=95=99=EB=B6=80 " contant=3D"true" title=3D"=EC=86=8C=EC=86=8D"=
+ readonly=3D"">
+				</td>
+				<th style=3D"width:150px">=EC=88=98=EA=B0=95=EC=A0=9C=ED=95=9C=ED=95=99=
+=EC=A0=90
+</th>
+				<td>
+				<input class=3D"size50px disabled" type=3D"text" id=3D"cntl_unit_total"=
+ name=3D"cntl_unit_total" value=3D"24" contant=3D"true" title=3D"=EC=88=98=
+=EA=B0=95=EC=A0=9C=ED=95=9C=ED=95=99=EC=A0=90" readonly=3D"">
+				</td>
+	<!-- 	=09
+				<th>=EC=88=98=EA=B0=95=EC=A0=9C=ED=95=9C=ED=95=99=EC=A0=90<br>(=EC=83=
+=81=EC=A3=BC=EC=BA=A0=ED=8D=BC=EC=8A=A4)</th>
+				<td>
+				<input class=3D"size50px" type=3D"text" id=3D"cntl_unit_2" name=3D"cntl=
+_unit_2" value=3D"0" contant=3D"true"/>
+				</td>
+	 -->
+			</tr>
+		</tbody></table>
+	</div>
+=09
+	<!-- =EA=B2=80=EC=83=89 =EC=98=81=EC=97=AD -->
+    <div class=3D"tit_area"><span class=3D"tit_area_r">01</span> =EA=B5=90=
+=EA=B3=BC=EB=AA=A9=EA=B2=80=EC=83=89
+ </div>
+   =20
+	<div class=3D"search_box3">
+		<table class=3D"emptyT">
+	        <colgroup>
+		        <col style=3D"width:410px;">
+		        <col style=3D"width:180px;">
+	        <col>
+	        </colgroup>
+	        <tbody><tr>
+	            <td>
+	                <label for=3D"search_subj_class_cde">=EA=B5=90=EA=B3=BC=EB=
+=AA=A9=EB=B2=88=ED=98=B8
+<br>(10=EC=9E=90=EB=A6=AC
+)</label>
+	                <input type=3D"text" id=3D"search_subj_class_cde" name=3D"=
+search_subj_class_cde" maxlength=3D"10">
+	                <label for=3D"captcha_cde">=EC=9E=90=EB=8F=99=EC=9E=85=EB=
+=A0=A5=EB=B0=A9=EC=A7=80=EB=AC=B8=EC=9E=90
+<br>(=EC=98=A4=EB=A5=B8=EC=AA=BD =EC=9D=B4=EB=AF=B8=EC=A7=80 4=EC=9E=90=EB=
+=A6=AC
+)</label>=20
+	                <input type=3D"text" id=3D"captcha_cde" name=3D"captcha_cd=
+e" maxlength=3D"4"><br>
+	            </td>
+	            <td>
+	                <div>
+	                    <img id=3D"captcha" src=3D"http://sugang.knu.ac.kr/Sug=
+ang/captcha" alt=3D"=EC=9E=90=EB=8F=99=EC=9E=85=EB=A0=A5=EB=B0=A9=EC=A7=80=
+=EB=AC=B8=EC=9E=90">
+	                   =20
+	                </div>
+	                <div id=3D"refreshCapchaImg" class=3D"center mT05"><a>[ =
+=EC=9D=B4=EB=AF=B8=EC=A7=80=EB=B3=80=EA=B2=BD
+ ]</a></div>
+	            </td>
+	            <td>
+	                <button class=3D"btn_conf_r" id=3D"btn_confirm" style=3D"m=
+argin-top:3px;">Enter</button>
+	                <button class=3D"btn_cancel_g" id=3D"btn_cancel" style=3D"=
+margin-top:3px;">Reset</button>
+	            </td>
+	        </tr>
+	    </tbody></table>
+	</div>
+
+	<div class=3D"tit_area"><span class=3D"tit_area_r">02</span> =EA=B5=90=EA=
+=B3=BC=EB=AA=A9=EA=B2=80=EC=83=89=EA=B2=B0=EA=B3=BC
+</div>
+=09
+	<div class=3D"btn_position">
+		<button class=3D"btn_wr" id=3D"btn_add" disabled=3D"" style=3D"color: rgb=
+(170, 170, 170); cursor: default;">=EC=9E=85=EB=A0=A5
+</button>
+		<button class=3D"btn_cc" id=3D"btn_cancel_grid">=EC=B7=A8=EC=86=8C
+</button>
+	</div>
+=09
+	<!-- =EC=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD=ED=95=A0 =EA=B0=95=EC=A2=8C=EB=
+=AA=A9=EB=A1=9D =EA=B7=B8=EB=A6=AC=EB=93=9C =EC=98=81=EC=97=AD -->
+	<div class=3D"grid_box">
+		<div id=3D"onlineLectCourseGrid" class=3D"grid" style=3D"width: 823px; he=
+ight: 180px;"><div class=3D"loading"></div></div>
+
+
+	</div>
+
+	<!-- =EB=B2=84=ED=8A=BC =EC=98=81=EC=97=AD -->
+	<div class=3D"tit_area"><span class=3D"tit_area_r">03</span> =EC=88=98=EA=
+=B0=95=EC=8B=A0=EC=B2=AD=EB=AA=A9=EB=A1=9D
+ </div>
+=09
+	<div class=3D"btn_position" style=3D"margin-top: 108px;">
+		<button class=3D"btn_wr" id=3D"btn_modify">=EC=88=98=EC=A0=95
+</button>
+		<button class=3D"btn_cc" id=3D"btn_delete">=EC=82=AD=EC=A0=9C
+</button>
+	</div>
+=09
+	<!-- =EC=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD=EB=AA=A9=EB=A1=9D =EA=B7=B8=EB=
+=A6=AC=EB=93=9C =EC=98=81=EC=97=AD -->
+	<div class=3D"grid_box">
+		<div id=3D"onlineLectReqGrid" class=3D"grid" style=3D"width: 823px; heigh=
+t: 220px;"><div class=3D"loading"></div></div>
+
+
+
+	</div>
+
+	<!-- =EB=B2=84=ED=8A=BC =EC=98=81=EC=97=AD -->
+	<div class=3D"tit_area"><span class=3D"tit_area_r">04</span> =EC=88=98=EA=
+=B0=95=EA=BE=B8=EB=9F=AC=EB=AF=B8=EB=AA=A9=EB=A1=9D
+ </div>
+	=09
+		<ul id=3D"info">
+	=09
+		  <li> =EC=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD=EC=9D=98 <font class=3D"txt_r=
+ed">"=EC=8B=A0=EC=B2=AD"=EC=9D=84 500=ED=9A=8C =EC=9D=B4=EC=83=81</font> =
+=ED=81=B4=EB=A6=AD =EC=8B=9C "=EC=88=98=EA=B0=95=EA=BE=B8=EB=9F=AC=EB=AF=B8=
+=EB=AA=A9=EB=A1=9D"=EC=97=90=EC=84=9C <font class=3D"txt_red">=ED=95=B4=EB=
+=8B=B9 =EA=B3=BC=EB=AA=A9=EC=9D=B4 =EC=82=AD=EC=A0=9C</font>=EB=90=A9=EB=8B=
+=88=EB=8B=A4.</li>
+		  <li> =E2=80=BB =EB=A7=8C=EC=95=BD =EC=88=98=EA=B0=95=EA=BE=B8=EB=9F=AC=
+=EB=AF=B8=EB=AA=A9=EB=A1=9D=EC=97=90=EC=84=9C =EC=82=AD=EC=A0=9C=EB=90=9C =
+=EA=B5=90=EA=B3=BC=EB=AA=A9=EC=9D=84 =EC=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD=
+=ED=95=98=EB=A0=A4=EB=A9=B4 =EC=9C=84=EC=9D=98 "=EA=B5=90=EA=B3=BC=EB=AA=A9=
+=EA=B2=80=EC=83=89"=EC=97=90=EC=84=9C =EC=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD =
+=ED=95=A0 =EC=88=98 =EC=9E=88=EC=9D=8C</li>
+	=09
+	=09
+		</ul>
+
+	<!-- =EC=88=98=EA=B0=95=EA=BE=B8=EB=9F=AC=EB=AF=B8=EC=8B=A0=EC=B2=AD=EB=AA=
+=A9=EB=A1=9D =EA=B7=B8=EB=A6=AC=EB=93=9C =EC=98=81=EC=97=AD -->
+	<div class=3D"grid_box">
+		<div id=3D"lectPackReqGrid" class=3D"grid" style=3D"width: 823px; height:=
+ 180px;"><div class=3D"loading"></div></div>
+
+
+
+	</div>
+=09
+
+<ul id=3D"info">
+
+<li> <font class=3D"txt_red">=EB=B6=80=EC=A0=84=EA=B3=B5</font>=EC=9D=98 =
+=EC=8B=A0=EC=B2=AD=EC=9D=80 =EC=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD=EC=97=90 =
+=EC=9D=98=ED=95=98=EB=AF=80=EB=A1=9C, =EC=88=98=EA=B0=95=EC=8B=A0=EC=B2=AD=
+=EC=8B=9C =ED=95=99=EC=83=9D=EC=9D=B4 =EC=A7=81=EC=A0=91 =ED=95=B4=EB=8B=B9=
+=EA=B3=BC=EB=AA=A9=EC=9D=98 =EA=B5=90=EA=B3=BC=EA=B5=AC=EB=B6=84=EC=9D=84 <=
+font class=3D"txt_red">=EB=B6=80=EC=A0=84=EA=B3=B5</font>=EC=9C=BC=EB=A1=9C=
+ =EC=A7=80=EC=A0=95=ED=95=B4=EC=95=BC =ED=95=A8</li>
+
+
+<div class=3D"iefix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+</div>
+</ul>=09
+=09
+	<!-- =EB=B3=B8=EB=AC=B8 =EB=81=9D -->
+	</div>
+	<div id=3D"copyright"></div>
+=09
+	</div>
+
+
+
+</body></html>
+------MultipartBoundary--Q9WdeRekkdCr7BFIDIXmlwQzKmDkwODWzO4DR1SWO4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-0788182a-9826-46a0-840b-bed3ec4fce0e@mhtml.blink
+
+@charset "utf-8";
+
+div#onlineLectCourseGrid td { text-align: center; }
+
+div#onlineLectCourseGrid td.capcha_cde input { width: 70px; text-align: cen=
+ter; }
+
+div#onlineLectCourseGrid td.subj_nm { text-align: left; }
+
+div#onlineLectCourseGrid col.capcha_img { width: 10%; }
+
+div#onlineLectCourseGrid col.capcha_cde { width: 10%; }
+
+div#onlineLectCourseGrid col.subj_class_cde { width: 11%; }
+
+div#onlineLectCourseGrid col.subj_nm { width: 25%; }
+
+div#onlineLectCourseGrid col.subj_div_cde { width: 10%; }
+
+div#onlineLectCourseGrid col.unit { width: 8%; }
+
+div#onlineLectCourseGrid col.repl_cmpl_yr_trm { width: 9%; }
+
+div#onlineLectCourseGrid col.lect_wk_tm { width: 12%; }
+
+div#onlineLectCourseGrid col.lect_quota { width: 4%; }
+
+div#onlineLectCourseGrid col.lect_req_cnt { width: 4%; }
+
+div#onlineLectReqGrid td { text-align: center; }
+
+div#onlineLectReqGrid td.subj_nm { text-align: left; }
+
+div#onlineLectReqGrid col.checked { width: 5%; }
+
+div#onlineLectReqGrid col.subj_class_cde { width: 12%; }
+
+div#onlineLectReqGrid col.subj_nm { width: 30%; }
+
+div#onlineLectReqGrid col.subj_div_cde { width: 10%; }
+
+div#onlineLectReqGrid col.repl_cmpl_yr_trm { width: 12%; }
+
+div#onlineLectReqGrid col.unit { width: 10%; }
+
+div#onlineLectReqGrid col.lect_wk_tm { width: 13%; }
+
+div#onlineLectReqGrid col.lect_quota { width: 5%; }
+
+div#onlineLectReqGrid col.lect_req_cnt { width: 5%; }
+
+div#lectPackReqGrid td { text-align: center; }
+
+div#lectPackReqGrid td.subj_nm { text-align: left; }
+
+div#lectPackReqGrid col.subj_class_cde { width: 12%; }
+
+div#lectPackReqGrid col.subj_nm { width: 28%; }
+
+div#lectPackReqGrid col.subj_div_cde_nm { width: 8%; }
+
+div#lectPackReqGrid col.repl_cmpl_yr_trm { width: 8%; }
+
+div#lectPackReqGrid col.unit { width: 6%; }
+
+div#lectPackReqGrid col.lect_wk_tm { width: 15%; }
+
+div#lectPackReqGrid col.lect_quota { width: 4%; }
+
+div#lectPackReqGrid col.lect_req_cnt { width: 4%; }
+
+div#lectPackReqGrid col.ins_clck_nbr { width: 7%; }
+
+div#lectPackReqGrid col.button { width: 8%; }
+
+td.button > a { font-weight: bold; }
+
+.emptyT { margin-top: 5px; width: 755px; }
+
+.emptyT label { text-align: center; }
+
+.emptyT input { margin-top: 5px; }
+------MultipartBoundary--Q9WdeRekkdCr7BFIDIXmlwQzKmDkwODWzO4DR1SWO4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://sugang.knu.ac.kr/Sugang/css/default.css
+
+@charset "utf-8";
+
+* { margin: 0px; padding: 0px; }
+
+body, html { font-family: =EB=8F=8B=EC=9B=80; font-size: 12px; color: rgb(0=
+, 0, 0); height: 100%; word-spacing: 0pt; }
+
+button, input, textarea, select { font-family: =EB=8F=8B=EC=9B=80; font-siz=
+e: 12px; padding: 3px 0px 2px; vertical-align: middle; }
+
+form { margin: 0px; }
+
+ul, ol { list-style: none; }
+
+table { border-collapse: collapse; }
+
+a:link { color: rgb(0, 0, 0); text-decoration: none; }
+
+a:visited { color: rgb(0, 0, 0); text-decoration: none; }
+
+a:hover { color: rgb(0, 0, 0); text-decoration: none; }
+
+a:active { color: rgb(185, 0, 0); text-decoration: none; }
+
+.wrap { width: 825px; margin: 0px auto; position: relative; }
+
+img { vertical-align: middle; }
+
+h1 { position: absolute; top: 10px; left: 10px; width: 820px; font-size: 18=
+px; letter-spacing: -1pt; padding-bottom: 0px; border-bottom: 1px solid bla=
+ck; z-index: 30; }
+
+h2 { margin-top: 10px; position: absolute; top: 10px; left: 10px; width: 76=
+5px; font-size: 18px; letter-spacing: -1pt; padding-bottom: 35px; padding-l=
+eft: 60px; border-bottom: 2px solid rgb(85, 85, 85); z-index: 30; backgroun=
+d: url("../img/title_sub.gif") no-repeat; }
+
+h3 { position: absolute; top: 10px; left: 10px; width: 765px; font-size: 18=
+px; letter-spacing: -1pt; padding-bottom: 5px; border-bottom: 1px solid bla=
+ck; z-index: 30; }
+
+div#logout { text-align: right; position: relative; z-index: 60; }
+
+div#logout_info { position: relative; text-align: right; z-index: 60; font-=
+size: 11px; }
+
+div#logout button { background: rgb(217, 83, 79); border: 1px solid rgb(206=
+, 77, 74); padding: 0px; height: 23px; color: rgb(255, 255, 255); font-weig=
+ht: bold; cursor: pointer; width: 75px; border-radius: 2px; }
+
+div#logout select { vertical-align: top; }
+
+div#content { position: absolute; top: 77px; left: 10px; width: 825px; z-in=
+dex: 50; margin-top: 0px; }
+
+#content h2 { font-size: 16px; letter-spacing: -2pt; width: 300px; height: =
+22px; padding: 11px 0px 0px 38px; }
+
+div#buttons { width: 100%; text-align: right; margin: 0px 0px -3px; }
+
+button { border: 0px; padding: 3px 0px 0px 18px; margin: 0px 0px 5px 3px; c=
+olor: rgb(50, 82, 115); cursor: pointer; }
+
+button.btn_conf_r { width: 75px; background-color: rgb(91, 192, 222); color=
+: rgb(255, 255, 255); font-weight: bold; padding: 5px; border: 1px solid rg=
+b(89, 183, 211); border-radius: 2px; }
+
+button.btn_cancel_g { width: 75px; padding: 5px; border: 1px solid rgb(204,=
+ 204, 204); background-color: rgb(236, 240, 241); border-radius: 2px; }
+
+button.search_pop { background: url("../img/buttons/search_pop.gif") no-rep=
+eat; width: 20px; height: 20px; }
+
+button.search { background: url("../img/buttons/search_2.gif") no-repeat; w=
+idth: 55px; }
+
+button.add { background: url("../img/buttons/add_2.gif") no-repeat; width: =
+55px; }
+
+button.save { background: url("../img/buttons/save_2.gif") no-repeat; width=
+: 55px; }
+
+button.modify { background: url("../img/buttons/modify_2.gif") no-repeat; w=
+idth: 55px; }
+
+button.cancel { background: url("../img/buttons/cancel_2.gif") no-repeat; w=
+idth: 55px; }
+
+button.delete { background: url("../img/buttons/delete_2.gif") no-repeat; w=
+idth: 55px; }
+
+button.help { background: url("../img/buttons/help_2.gif") no-repeat; width=
+: 55px; }
+
+button.confirm { background: url("../img/buttons/confirm_2.gif") no-repeat;=
+ width: 55px; }
+
+button.stop { background: url("../img/buttons/stop_2.gif") no-repeat; width=
+: 55px; }
+
+button.blank { background: url("../img/buttons/blank.gif") no-repeat; width=
+: 1px; }
+
+button.return_4 { background: url("../img/buttons/return_4.gif") no-repeat;=
+ width: 80px; }
+
+button.stop_4 { background: url("../img/buttons/stop_4.gif") no-repeat; wid=
+th: 80px; }
+
+button.trans_4 { background: url("../img/buttons/trans_4.gif") no-repeat; w=
+idth: 80px; }
+
+button.return_6 { background: url("../img/buttons/return_6.gif") no-repeat;=
+ width: 105px; }
+
+button.stop_6 { background: url("../img/buttons/stop_6.gif") no-repeat; wid=
+th: 105px; }
+
+button.trans_6 { background: url("../img/buttons/trans_6.gif") no-repeat; w=
+idth: 105px; }
+
+button.search_10 { background: url("../img/buttons/search_10.gif") no-repea=
+t; width: 155px; }
+
+button.login { background: url("../../img/buttons/login.gif") no-repeat; wi=
+dth: 155px; }
+
+button.btn_wr { border-radius: 2px; padding: 4px 13px; cursor: pointer; bac=
+kground-color: rgb(26, 188, 156); color: rgb(255, 255, 255); font-weight: b=
+old; border: 1px solid rgb(23, 166, 137); }
+
+button.btn_cc { border-radius: 2px; padding: 4px 13px; cursor: pointer; bor=
+der: 1px solid rgb(204, 204, 204); background-color: rgb(232, 245, 254); }
+
+.btn_search_2 { width: 54px; height: 21px; margin: 2px 0px 0px 2px; padding=
+: 2px 0px 0px 15px; border: 0px; text-align: center; font-size: 11px; font-=
+weight: bold; color: rgb(102, 102, 102); font-family: dotum, aria, helvetic=
+a; background-image: url("../img/btn_search_2.gif"); }
+
+#table.search tr th { height: 20px; width: 100px; padding: 7px 0px 5px; bor=
+der: 2px solid rgb(203, 191, 191); border-collapse: collapse; text-align: c=
+enter; background: rgb(242, 235, 235); color: rgb(113, 71, 71); font-weight=
+: normal; }
+
+#table.search tr td { padding: 5px 0px 5px 7px; text-align: left; border: 2=
+px solid rgb(203, 191, 191); border-collapse: collapse; }
+
+table.search { width: 100%; border-top: 2px solid rgb(170, 153, 153); borde=
+r-collapse: collapse; margin: 0px 0px 5px; }
+
+table.search tr th { height: 20px; width: 100px; padding: 3px 0px; border: =
+1px solid rgb(203, 191, 191); border-collapse: collapse; text-align: center=
+; background: rgb(242, 235, 235); color: rgb(113, 71, 71); font-weight: nor=
+mal; }
+
+table.search tr td { padding: 2px 0px 2px 5px; text-align: left; border: 1p=
+x solid rgb(203, 191, 191); border-collapse: collapse; }
+
+#searchWorkType { width: 100px; }
+
+#searchProgType { width: 170px; }
+
+#searchProgNm { width: 200px; }
+
+#programDetail { margin: 7px 0px 0px; }
+
+.pv_box { height: 42px; border-bottom: 1px solid rgb(102, 102, 102); backgr=
+ound-color: rgb(236, 240, 241); }
+
+.form { width: 100%; border-collapse: collapse; margin: 1px 0px 10px; }
+
+.form tr th { height: 37px; padding: 3px 5px; border: 0px; text-align: righ=
+t; font-weight: bold; color: rgb(81, 81, 81); }
+
+.form tr td { padding: 1px 0px 1px 5px; border: 0px; }
+
+.form2 { width: 100%; border-top: 1px solid rgb(192, 192, 192); border-coll=
+apse: collapse; margin: 0px 0px 5px; }
+
+.form2 tr th { height: 20px; width: 100px; padding: 3px 0px; border: 1px so=
+lid rgb(180, 180, 180); background: rgb(239, 239, 239); text-align: center;=
+ font-weight: normal; color: rgb(81, 81, 81); }
+
+.form2 tr td { padding: 2px 0px 1px 5px; border: 1px solid rgb(180, 180, 18=
+0); background: rgb(255, 255, 255); }
+
+.title_black { font-weight: bold; padding: 7px 0px 5px 23px; background: ur=
+l("../img/title_dot.gif") 2px 5px no-repeat; color: rgb(43, 43, 43); font-s=
+ize: 13px; letter-spacing: -1pt; }
+
+.title_blue { font-weight: bold; padding: 7px 0px 5px 23px; background: url=
+("../img/icon_blue.gif") 2px 5px no-repeat; color: rgb(0, 120, 255); font-s=
+ize: 13px; letter-spacing: -1pt; }
+
+.title_red { font-weight: bold; padding: 7px 0px 5px 23px; background: url(=
+"../img/icon_red.gif") 2px 5px no-repeat; color: rgb(205, 16, 57); font-siz=
+e: 13px; letter-spacing: -1pt; }
+
+.search_box { width: 825px; height: 60px; float: left; background-image: ur=
+l("../img/search_back.gif"); margin-top: 3px; }
+
+.search_box2 { clear: both; width: 825px; height: 60px; background-image: u=
+rl("../img/search_back4.gif"); margin-top: 3px; }
+
+.search_box2 label { position: relative; float: left; display: inline; marg=
+in-right: 5px; padding-top: 6px; letter-spacing: -1px; }
+
+.search_box2 input { position: relative; float: left; display: inline; marg=
+in-right: 5px; margin-top: 2px; }
+
+.search_box2 span { position: relative; float: left; display: inline; margi=
+n-right: 5px; }
+
+.search_box2 span.btn { margin-top: 2px; }
+
+.search_box3 { clear: both; width: 795px; height: 80px; border: 3px solid r=
+gb(221, 221, 221); padding: 15px 0px 0px 25px; }
+
+.search_box3 label { position: relative; float: left; display: inline; marg=
+in-right: 5px; margin-left: 20px; padding-top: 6px; letter-spacing: -1px; }
+
+.search_box3 input { position: relative; float: left; display: inline; marg=
+in-right: 5px; margin-top: 2px; }
+
+.search_box3 span { position: relative; float: left; display: inline; margi=
+n-right: 5px; }
+
+.search_box3 span.btn { margin-top: 2px; }
+
+.searchTable { width: 820px; color: rgb(0, 0, 0); border-collapse: collapse=
+; text-align: center; margin: 12px 5px 0px 10px; padding: 0px; }
+
+.searchTable th { color: rgb(255, 255, 255); font-weight: bold; height: 25p=
+x; border: 1px solid rgb(204, 204, 204); background-color: rgb(178, 207, 23=
+8); text-align: center; width: 100px; }
+
+.searchTable td { color: rgb(102, 102, 102); height: 25px; border: 1px soli=
+d rgb(204, 204, 204); padding: 0px 5px; text-align: left; background-color:=
+ rgb(255, 255, 255); }
+
+.searchT { width: 820px; color: rgb(0, 0, 0); border-collapse: collapse; te=
+xt-align: center; margin: 12px 5px 0px 10px; padding: 0px; }
+
+.searchT th { color: rgb(255, 255, 255); font-weight: bold; height: 25px; b=
+order: 1px solid rgb(204, 204, 204); background-color: rgb(178, 207, 238); =
+text-align: center; width: 100px; }
+
+.searchT td { color: rgb(102, 102, 102); height: 25px; border: 1px solid rg=
+b(204, 204, 204); padding: 0px 5px; text-align: left; background-color: rgb=
+(255, 255, 255); }
+
+.emptyT { width: 740px; border-collapse: collapse; margin: 0px; font-family=
+: dotum; font-size: 12px; color: rgb(51, 51, 51); padding: 0px; text-align:=
+ left; }
+
+.emptyT th { border: 0px; padding: 5px 0px 2px 10px; color: rgb(102, 102, 1=
+02); text-align: left; }
+
+.emptyT td { border: 0px; text-align: left; }
+
+.emptyT td.bar { border: 0px; padding: 0px; text-align: center; }
+
+.emptyT td.left { border: 0px; padding: 2px 0px; text-align: left; }
+
+table.form th.required { color: rgb(200, 36, 36); }
+
+table.form2 th.required { color: rgb(200, 36, 36); }
+
+input { background: rgb(255, 255, 255); border: 1px solid darkgray; font-fa=
+mily: =EB=8F=8B=EC=9B=80; height: 14px; font-size: 12px; padding: 3px; vert=
+ical-align: middle; }
+
+input.disabled { background: rgb(245, 245, 245); color: rgb(132, 132, 132);=
+ border: 1px solid darkgray; font-family: =EB=8F=8B=EC=9B=80; height: 14px;=
+ font-size: 12px; padding: 3px; vertical-align: middle; }
+
+.file { background: rgb(255, 255, 255); border: 1px solid darkgray; font-fa=
+mily: =EB=8F=8B=EC=9B=80; height: 18px; font-size: 12px; padding: 1px 0px 2=
+px; vertical-align: middle; }
+
+textarea.disabled { background: rgb(238, 238, 238); border: 1px solid darkg=
+ray; font-family: =EB=8F=8B=EC=9B=80; font-size: 12px; padding: 1px 0px 2px=
+; vertical-align: middle; }
+
+div.reportViewer { border: 1px solid darkgray; }
+
+textarea { word-break: break-all; }
+
+.size99 { width: 99%; }
+
+.size95 { width: 95%; }
+
+.size90 { width: 90%; }
+
+.size85 { width: 85%; }
+
+.size80 { width: 80%; }
+
+.size75 { width: 75%; }
+
+.size70 { width: 70%; }
+
+.size25 { width: 25%; }
+
+.size30px { width: 30px; }
+
+.size40px { width: 40px; }
+
+.size50px { width: 50px; }
+
+.size60px { width: 60px; }
+
+.size65px { width: 65px; }
+
+.size70px { width: 70px; }
+
+.size80px { width: 80px; }
+
+.size100px { width: 100px; }
+
+.size150px { width: 150px; }
+
+.size170px { width: 170px; }
+
+.size180px { width: 180px; }
+
+.size200px { width: 200px; }
+
+.size250px { width: 250px; }
+
+.size300px { width: 300px; }
+
+.size330px { width: 330px; }
+
+.size350px { width: 350px; }
+
+.size400px { width: 400px; }
+
+.size450px { width: 450px; }
+
+.size500px { width: 500px; }
+
+.size550px { width: 550px; }
+
+.size600px { width: 600px; }
+
+.size650px { width: 650px; }
+
+.size700px { width: 700px; }
+
+.size750px { width: 750px; }
+
+.size800px { width: 800px; }
+
+.size850px { width: 850px; }
+
+.center { text-align: center; }
+
+.right { text-align: right; }
+
+div.panel { border: 1px solid darkgray; overflow: auto; width: 100%; }
+
+div.note { line-height: 15px; }
+
+div.note h5 { font-weight: bold; padding: 7px 0px 5px 23px; background: url=
+("../img/icon_blue.gif") 2px 5px no-repeat; color: rgb(0, 120, 255); font-s=
+ize: 13px; letter-spacing: -1pt; }
+
+div.note p { padding-left: 22px; }
+
+div.note p.indent1 { padding-left: 42px; }
+
+div.note p.indent2 { padding-left: 62px; }
+
+div.note p.emp { color: red; }
+
+div#myinfo { position: absolute; left: 860px; top: 8px; width: 130px; font-=
+size: 11px; text-align: center; }
+
+div#myinfo p { background: url("../img/icon_myinfo.gif") 0px 0px no-repeat;=
+ padding-left: 15px; margin-bottom: 2px; text-align: left; }
+
+.txt_red { font-size: 12px; color: rgb(185, 0, 0); line-height: 1.7; font-f=
+amily: dotum; text-decoration: none; }
+
+.txt_red_b { font-size: 12px; color: rgb(185, 0, 0); line-height: 1.7; font=
+-family: dotum; font-weight: bold; text-decoration: none; }
+
+.txt_gray { font-size: 12px; color: rgb(0, 0, 0); line-height: 1.7; font-fa=
+mily: dotum; }
+
+.txt_gray_b { font-size: 12px; color: rgb(0, 0, 0); line-height: 1.7; font-=
+family: dotum; font-weight: bold; }
+
+.txt_plain { font-size: 12px; color: rgb(0, 0, 0); line-height: 1.7; font-f=
+amily: dotum; font-weight: normal; }
+
+.txt_violet_b { font-size: 11px; color: rgb(102, 102, 204); line-height: 1.=
+7; font-family: dotum; font-weight: bold; }
+
+div.iefix { width: 0px; height: 0px; font-size: 0px; line-height: 0; displa=
+y: none; overflow: hidden; }
+
+.titform_box { clear: both; width: 825px; height: 26px; float: left; paddin=
+g-top: 15px; font-size: 16px; }
+
+.titleform_box2 { width: 825px; height: 26px; float: left; padding-top: 5px=
+; background-image: url("/SugangPack/img/title_back2.gif"); margin-top: -10=
+px; }
+
+.tit_area { font-size: 15px; font-family: dotum; color: rgb(51, 51, 51); te=
+xt-align: left; margin-left: 10px; display: inline; padding-top: 25px; floa=
+t: left; width: 280px; height: 25px; font-weight: bold; }
+
+.tit_area_r { color: rgb(185, 0, 0); }
+
+.btn_area { text-align: right; float: right; width: 500px; height: 25px; pa=
+dding-bottom: 2px; margin-bottom: -15px; }
+
+.grid_box { float: left; margin: 0px 0px 0px 2px; padding-top: 0px; text-al=
+ign: center; overflow: hidden; width: 824px; }
+
+.btn_position { position: relative; top: 23px; text-align: right; }
+
+.grid_box table { width: 100%; border-bottom: 1px solid rgb(213, 213, 213);=
+ border-top: 2px solid rgb(221, 221, 221); }
+
+.grid_box table tr:hover td { background: rgb(253, 252, 250); }
+
+.grid_box table th, .grid_box table td { padding: 7px; text-align: center; =
+}
+
+.grid_box table td { padding: 7px 10px; border-left: 1px solid rgb(229, 229=
+, 229); border-top: 1px solid rgb(242, 242, 242); }
+
+.grid_box table td.first { border-left: none; }
+
+.grid_box table th { font-weight: normal; background: rgb(245, 245, 245); h=
+eight: 34px; }
+
+.grid_box table .em_col { font-weight: normal; background: rgb(236, 240, 24=
+1); }
+
+.grid_box table a { color: rgb(0, 130, 153); }
+
+ul#info { padding: 0px; margin: 10px 0px; width: 825px; list-style-type: no=
+ne; float: left; }
+
+ul#info li { float: left; width: 700px; padding: 2px 0px 5px 18px; cursor: =
+pointer; list-style-type: none; }
+
+table.search td { width: 701px; }
+
+input#search_subj_class_cde { text-align: center; width: 90px; text-transfo=
+rm: uppercase; }
+
+input#captcha_cde { text-align: center; width: 60px; text-transform: lowerc=
+ase; }
+
+table.form input#pstn_crse_cde { text-align: center; width: 60px; }
+
+table.form input#pstn_crse_cde_nm { text-align: left; }
+
+table.form input#subj_cde { text-align: center; width: 60px; }
+
+table.form input#subj_nm { text-align: left; width: 200px; }
+
+table.form input#stu_nbr { text-align: center; }
+
+table.form input#kor_nm { text-align: left; }
+
+table.form input#cntl_unit_total { text-align: center; }
+
+table.form input#cntl_unit_1 { text-align: center; }
+
+table.form input#cntl_unit_2 { text-align: center; }
+
+table.form2 td { width: 160px; }
+
+.table1 { width: 780px; }
+
+.rAlign { text-align: right; }
+
+div#timeStatus { position: relative; font-weight: bold; color: blue; }
+
+button.dummy { background: no-repeat; width: 0px; height: 0px; }
+
+div#refreshCapchaImg { width: 150px; margin-top: 3px; }
+
+#refreshCapchaImg a:link { color: rgb(91, 160, 163); }
+
+#refreshCapchaImg a:hover { color: rgb(68, 101, 114); text-decoration: unde=
+rline; }
+
+#refreshCapchaImg a:visited { color: rgb(91, 160, 163); }
+
+a:link { color: rgb(91, 160, 163); }
+
+a:hover { color: rgb(68, 101, 114); text-decoration: underline; }
+
+a:visited { color: rgb(91, 160, 163); }
+
+button.langageButtonK { cursor: pointer; width: 80px; color: rgb(255, 255, =
+255); font-weight: bold; padding: 8px; background-color: rgb(73, 73, 73) !i=
+mportant; border: 1px solid rgb(73, 73, 73) !important; }
+
+button.langageButtonE { cursor: pointer; width: 80px; color: rgb(255, 255, =
+255); font-weight: bold; padding: 8px; background-color: rgb(73, 73, 73) !i=
+mportant; border: 1px solid rgb(73, 73, 73) !important; }
+------MultipartBoundary--Q9WdeRekkdCr7BFIDIXmlwQzKmDkwODWzO4DR1SWO4----
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://sugang.knu.ac.kr/Sugang/img/title_sub.gif
+
+R0lGODlhWQAoAPcAAP75+eBJTdonLPfNzu+eoPvl5twtMuqChN45PvCpq+ZqbdsqL905PdwwNfnZ
+2twxNvbMze+foeqFiP/9/euHiuNbX+BFSf76+tomK9kkKfjX2OBKTu6bnt9ESN48QNwzN/jY2fjW
+1/fOz9soLdspLvvq6udydeZpbOl6ff78/OqEh/bNzv739+dwc99ARfzu7vS/weuJjOVnavvp6euK
+jeqAg/3y8vCnqfzs7d01OuVjZvO3ufzt7fne3//+/t03O+BFSul7fvKztORhZf3x8u+gouZrb/XG
+yPbKy/77+/GrreNZXe6cnvK0tt9CRvjU1dstMfzv79olKuBITPbLzPKys++ho/O1t/Coqvrj4++j
+peVlaeZqbvfS0/CmqN9BRvzq69kkKPXExeh2eeVoa+l8f+6anN46P/fQ0eFPU+FMUN04PPjV1vbJ
+yuJTV/rh4v/8/NsnLPvo6O6dn/Kwsvvm5/GtruuIi/Ckpu2UltsrMPvk5eZsb+h5fN4/Q/329uNY
+W90zOP309P319e6Zm9okKf///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAABZACgA
+AAj/AA0JNNRDgwMHIF4MXNgFAgQxOF60GUCxYkUIT4gsNDQjxEEQJTYKEkERDYCNKFOqXEkl0IKX
+VjaWMDICQ6EyUQbJEMCzZ08MIzygwDGwzoaXCyRsFEGCZ4MCK6NK3QgHSKGrcxbaAHS1kAkfAiN0
+HUu2UJ+FZLrW2Aihqx6oU+OuBLChK4GBIZZcxXCAxUCxV3NQoBGDxh03XXPwGMil64GNKwRcNQBX
+ruWFAALYFYjkQ1c8Gwl0VbNxhuerMAYqcAxZciHKl2MLzNy1iKEdDK42iIBS9NUAJwemmNLVjmrW
+Cwe4hi37Mu2rWuh0bZC6d1fgmDVfxXL86uPkyys3/4/7vJAMKFcz5FHpuxD2geUTdC/0faDyyeLH
+Sy1vpkb6Dm+k1N57s2lXiHwCrebdRve9lp9+cxnohQ0/dHXCBNb9FlyBXSFoiIL0MRgehOQZeNcR
+DXSFAoYLDbihIfHNV59ADTJHYlTl3WUIE2M1Edp1L8Yo0AnI2TfijTiaKNAfFVwVhgdstAhkdh0O
+xEdXKoiIH5JJbiYQGBZ05UcWA7lI5VUeBtHVFhtpcCSXKeWYXIpX6ZCCQGbCZ6CHQnQVRwsUSCAB
+BS1IsSWccXbQFQcbETJWloZw0JUFQYZ51Q0DTTBGWWWRsAeiKV0whAtfuKDERkmY8MCqD1xhyA1r
+IFHAQAUXLHRBBQzIWsVCLMSQxhm5IiDssAw4IQeoyCar7LLMNuvss9BGK+201FZr7bXYZqvtttx2
+6+234IYr7rjklmvuueimq+667Lbr7rvvBgQAOw==
+
+------MultipartBoundary--Q9WdeRekkdCr7BFIDIXmlwQzKmDkwODWzO4DR1SWO4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://sugang.knu.ac.kr/Sugang/css/grid.css
+
+@charset "utf-8";
+
+div.grid { padding-left: 0px; border: 1px solid rgb(207, 207, 207); margin-=
+bottom: 5px; }
+
+div.grid div { padding-left: 0px; text-align: left; }
+
+div.grid div.title { overflow: hidden; border-right: 0px; position: absolut=
+e; }
+
+div.grid div.data { overflow: auto; height: 100%; }
+
+div.grid div.title table, div.grid div.data table { border-collapse: collap=
+se; table-layout: fixed; width: 100%; border-top: 1px solid rgb(138, 138, 1=
+38); border-right: 1px solid rgb(207, 207, 207); border-bottom: 1px solid r=
+gb(207, 207, 207); }
+
+div.grid th { color: rgb(0, 0, 0); background: rgb(239, 239, 239); padding:=
+ 7px 0px 4px; border: 1px solid rgb(207, 207, 207); font-weight: normal; te=
+xt-align: center; }
+
+div.grid td { padding: 5px 5px 4px; border: 1px solid rgb(207, 207, 207); }
+
+div.grid th a { color: black; text-decoration: none; }
+
+div.grid th a:hover { text-decoration: underline; }
+
+div.grid div.data table tr.data { cursor: pointer; }
+
+div.grid div.data table .selected { background: rgb(255, 238, 239); color: =
+rgb(1, 5, 190); }
+
+div.grid div.data table .added { font-weight: bold; }
+
+div.grid div.data table .modified { font-style: italic; font-weight: bold; =
+}
+
+div.grid div.data table .deleted { display: none; }
+
+div.grid div.data table tr.emptyResult td { text-align: center; height: 30p=
+x; }
+
+div.grid .hover { background: rgb(238, 238, 238); }
+
+div.grid div.loading { height: 50%; text-align: center; font-weight: bold; =
+font-size: 20px; padding-top: 100px; background-repeat: no-repeat; backgrou=
+nd-position: 330px 100px; }
+
+div.grid div.pages { text-align: center; margin-top: 5px; }
+
+div.grid div.pages button { background: none; border: 1px solid lightgrey; =
+padding: 2px; }
+
+div.grid div.pages button.page { border: 1px dotted lightgrey; }
+
+div.grid div.pages button.selected { font-weight: bold; background: rgb(239=
+, 239, 239); }
+
+col.checked { width: 40px; }
+
+th.checked, td.checked { text-align: center; }
+
+th.checked input, td.checked input { border: none; }
+
+col.no { width: 20px; }
+------MultipartBoundary--Q9WdeRekkdCr7BFIDIXmlwQzKmDkwODWzO4DR1SWO4------

@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<!-- saved from url=(0069)http://sugang.knu.ac.kr/Sugang/cour/lectReq/onlineLectReq/list.action -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="Content-Language" content="ko">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=11">
+	<script type="text/javascript">
+	var contextPath = '/Sugang';
+	</script>
+	<script type="text/javascript" charset="UTF-8" src="./경북대 온라인 수강신청(57)_files/prototype.js.download"></script>
+	<script type="text/javascript" charset="UTF-8" src="./경북대 온라인 수강신청(57)_files/common.js.download"></script>
+	<script type="text/javascript" charset="UTF-8" src="./경북대 온라인 수강신청(57)_files/grid.js.download"></script>
+	<!-- netfunnel 적용 20.11.10.-->
+	<script type="text/javascript" src="./경북대 온라인 수강신청(57)_files/netfunnel.js.download"></script>
+
+	<!--[if lt IE 9]>
+    <script type="text/javascript" charset="UTF-8" src="/Sugang/js/html5.js"></script>
+    <![endif]-->
+	<link rel="stylesheet" href="./경북대 온라인 수강신청(57)_files/default.css" type="text/css">
+	<link rel="stylesheet" href="./경북대 온라인 수강신청(57)_files/grid.css" type="text/css">
+	<title>경북대 온라인 수강신청(57)</title>
+
+	<style type="text/css">
+        /*  TD 4개 인 경우 */
+		
+		
+		/* GRID */
+		div#onlineLectCourseGrid td { text-align: center; }
+		div#onlineLectCourseGrid td.capcha_cde input { width: 70px; text-align: center; }
+		div#onlineLectCourseGrid td.subj_nm { text-align: left; }
+		
+		div#onlineLectCourseGrid col.capcha_img       { width: 10%; }
+		div#onlineLectCourseGrid col.capcha_cde       { width: 10%; }
+		div#onlineLectCourseGrid col.subj_class_cde   { width: 11%; }
+		div#onlineLectCourseGrid col.subj_nm          { width: 25%; }
+		div#onlineLectCourseGrid col.subj_div_cde     { width: 10%; }
+		div#onlineLectCourseGrid col.unit             { width: 8%; }
+		div#onlineLectCourseGrid col.repl_cmpl_yr_trm { width: 9%; }
+		div#onlineLectCourseGrid col.lect_wk_tm       { width: 12%; }
+		div#onlineLectCourseGrid col.lect_quota       { width: 4%; }
+		div#onlineLectCourseGrid col.lect_req_cnt     { width: 4%; }
+		
+		
+		div#onlineLectReqGrid td { text-align: center; }
+		div#onlineLectReqGrid td.subj_nm { text-align: left; }
+    	
+    	div#onlineLectReqGrid col.checked            { width: 5%; }
+		div#onlineLectReqGrid col.subj_class_cde     { width: 12%; }
+		div#onlineLectReqGrid col.subj_nm            { width: 30%; }
+		div#onlineLectReqGrid col.subj_div_cde       { width: 10%; }
+		div#onlineLectReqGrid col.repl_cmpl_yr_trm   { width: 12%; }
+		div#onlineLectReqGrid col.unit               { width: 10%; }
+		div#onlineLectReqGrid col.lect_wk_tm         { width: 13%; }
+		div#onlineLectReqGrid col.lect_quota         { width: 5%; }
+		div#onlineLectReqGrid col.lect_req_cnt       { width: 5%; }
+		
+		div#lectPackReqGrid td { text-align: center; }
+		div#lectPackReqGrid td.subj_nm { text-align: left; }
+
+		div#lectPackReqGrid col.subj_class_cde       { width: 12%; }
+		div#lectPackReqGrid col.subj_nm              { width: 28%; }
+		div#lectPackReqGrid col.subj_div_cde_nm      { width: 8%; }
+		div#lectPackReqGrid col.repl_cmpl_yr_trm     { width: 8%; }
+		div#lectPackReqGrid col.unit                 { width: 6%; }
+		div#lectPackReqGrid col.lect_wk_tm           { width: 15%; }
+		div#lectPackReqGrid col.lect_quota           { width: 4%; }
+		div#lectPackReqGrid col.lect_req_cnt         { width: 4%; }
+		div#lectPackReqGrid col.ins_clck_nbr		 { width: 7%; }
+		div#lectPackReqGrid col.button               { width: 8%; }
+		
+		
+		
+		
+		td.button > a {font-weight: bold;}
+		.emptyT {margin-top: 5px; width: 755px;}
+		.emptyT label {text-align: center;}
+		.emptyT input {margin-top: 5px;}
+	</style>
+	
+</head>
+<body>
+	<div class="wrap">
+	<button class="dummy" onclick="" type="button"></button>
+	<h2>온라인수강신청
+</h2>
+	<div id="logout"> 
+		<button class="stop" onclick="logout();" type="button">종료
+</button>
+		<button class="langageButtonK" onclick="changeLangage(&#39;kor&#39;);" type="button">한국어</button>
+		<button class="langageButtonE" onclick="changeLangage(&#39;eng&#39;);" type="button">English</button>
+
+<!-- 			<option value="kor" label="한국어" selected="selected"></option> -->
+<!-- 			<option value="eng" label="English"></option> -->
+
+		<div id="timeStatus"></div>
+	</div>
+	
+	
+	<div id="logout_info">수강신청 종료 시 반드시 <font class="txt_violet_b">“종료”</font>버튼을 눌러주세요.</div>
+	
+	
+	
+	<!-- 본문시작 -->
+	<div id="content">
+	
+	
+	<script type="text/javascript">
+	
+	// 제한 시간 (초)
+	var limit = 1200;
+	// 로그인 후 경과 시간 (초)
+
+	var elapsed = Math.round((1628575801655-1628575671000)/1000);
+	new PeriodicalExecuter( function( pe ) {
+		if ( ++elapsed >= limit ) {
+			logout();
+		} else {
+			
+			$( 'timeStatus' ).update( ( limit - elapsed ) + '초 후에 자동으로 로그아웃됩니다.' );
+			
+			
+		}
+	}, 1 );
+	
+	</script>
+	
+	
+	<!-- 상세 영역 -->
+	<div class="pv_box">
+		<table class="form">
+			<tbody><tr>
+				<th>학번
+/성명
+</th>
+				<td width="200px">
+				<input class="size70px disabled" type="text" id="stu_nbr" name="stu_nbr" value="2019114538" contant="true" title="학번" readonly="">
+				
+				<input class="size100px disabled" type="text" id="kor_nm" name="kor_nm" value="서명원" contant="true" title="성명" readonly="">
+				
+				
+				</td>
+				<th>소속
+</th>
+				<td>
+				<input class="size95 disabled" type="text" id="pstn_crse_cde_nm" name="pstn_crse_cde_nm" value="IT대학 컴퓨터학부 " contant="true" title="소속" readonly="">
+				</td>
+				<th style="width:150px">수강제한학점
+</th>
+				<td>
+				<input class="size50px disabled" type="text" id="cntl_unit_total" name="cntl_unit_total" value="24" contant="true" title="수강제한학점" readonly="">
+				</td>
+	<!-- 		
+				<th>수강제한학점<br>(상주캠퍼스)</th>
+				<td>
+				<input class="size50px" type="text" id="cntl_unit_2" name="cntl_unit_2" value="0" contant="true"/>
+				</td>
+	 -->
+			</tr>
+		</tbody></table>
+	</div>
+	
+	<!-- 검색 영역 -->
+    <div class="tit_area"><span class="tit_area_r">01</span> 교과목검색
+ </div>
+    
+	<div class="search_box3">
+		<table class="emptyT">
+	        <colgroup>
+		        <col style="width:410px;">
+		        <col style="width:180px;">
+	        <col>
+	        </colgroup>
+	        <tbody><tr>
+	            <td>
+	                <label for="search_subj_class_cde">교과목번호
+<br>(10자리
+)</label>
+	                <input type="text" id="search_subj_class_cde" name="search_subj_class_cde" maxlength="10" onkeydown="if (event.keyCode == 13) return doEnterSearchSubj();">
+	                <label for="captcha_cde">자동입력방지문자
+<br>(오른쪽 이미지 4자리
+)</label> 
+	                <input type="text" id="captcha_cde" name="captcha_cde" maxlength="4" onkeydown="if (event.keyCode == 13) return  doSearchCourse();"><br>
+	            </td>
+	            <td>
+	                <div>
+	                    <img id="captcha" src="./경북대 온라인 수강신청(57)_files/captcha" alt="자동입력방지문자">
+	                    
+	                </div>
+	                <div id="refreshCapchaImg" class="center mT05"><a href="javascript:refreshCapcha();">[ 이미지변경
+ ]</a></div>
+	            </td>
+	            <td>
+	                <button class="btn_conf_r" id="btn_confirm" onclick="doSearchCourse();" style="margin-top: 3px; color: rgb(50, 82, 115); cursor: pointer;" type="button">Enter</button>
+	                <button class="btn_cancel_g" id="btn_cancel" onclick="doCancel();" style="margin-top: 3px; color: rgb(50, 82, 115); cursor: pointer;" type="button">Reset</button>
+	            </td>
+	        </tr>
+	    </tbody></table>
+	</div>
+
+	<div class="tit_area"><span class="tit_area_r">02</span> 교과목검색결과
+</div>
+	
+	<div class="btn_position">
+		<button class="btn_wr" id="btn_add" onclick="doAdd();" disabled="" type="button" style="color: rgb(170, 170, 170); cursor: default;">입력
+</button>
+		<button class="btn_cc" id="btn_cancel_grid" onclick="doCancelGrid();" disabled="" type="button" style="color: rgb(170, 170, 170); cursor: default;">취소
+</button>
+	</div>
+	
+	<!-- 수강신청할 강좌목록 그리드 영역 -->
+	<div class="grid_box">
+		<div id="onlineLectCourseGrid" class="grid" style="width: 823px; height: 180px;"><div class="title" id="" style="width: 806px;"><table style="width: 806px;"><colgroup><col class="open_yr_trm"><col class="subj_class_cde"><col class="subj_cde"><col class="subj_nm"><col class="sub_class_cde"><col class="subj_div_cde"><col class="subj_div_updt_yn"><col class="unit"><col class="repl_cmpl_yr_trm"><col class="lect_wk_tm"><col class="lect_quota"><col class="lect_req_cnt"><col class="close_dt"></colgroup><tbody><tr><th class="open_yr_trm">개설년도/학기</th><th class="subj_class_cde">교과목번호</th><th class="subj_cde">과목코드</th><th class="subj_nm">교과목명</th><th class="sub_class_cde">분반코드</th><th class="subj_div_cde">교과구분</th><th class="subj_div_updt_yn">교과구분수정가능여부</th><th class="unit">학점</th><th class="repl_cmpl_yr_trm">재이수</th><th class="lect_wk_tm">강의시간</th><th class="lect_quota">제한인원</th><th class="lect_req_cnt">수강인원</th><th class="close_dt">폐강일자</th></tr></tbody></table></div><div class="data" style="width: 823px;"><table style="width: 806px;"><colgroup><col class="open_yr_trm"><col class="subj_class_cde"><col class="subj_cde"><col class="subj_nm"><col class="sub_class_cde"><col class="subj_div_cde"><col class="subj_div_updt_yn"><col class="unit"><col class="repl_cmpl_yr_trm"><col class="lect_wk_tm"><col class="lect_quota"><col class="lect_req_cnt"><col class="close_dt"></colgroup><tbody><tr><th class="open_yr_trm">개설년도/학기</th><th class="subj_class_cde">교과목번호</th><th class="subj_cde">과목코드</th><th class="subj_nm">교과목명</th><th class="sub_class_cde">분반코드</th><th class="subj_div_cde">교과구분</th><th class="subj_div_updt_yn">교과구분수정가능여부</th><th class="unit">학점</th><th class="repl_cmpl_yr_trm">재이수</th><th class="lect_wk_tm">강의시간</th><th class="lect_quota">제한인원</th><th class="lect_req_cnt">수강인원</th><th class="close_dt">폐강일자</th></tr><tr class="emptyResult"><td colspan="13">조회된 자료가 없습니다.</td></tr></tbody></table></div><style type="text/css">div#onlineLectCourseGrid col.open_yr_trm {display:none;}
+html>/**/body div#onlineLectCourseGrid .open_yr_trm {display:none;}
+div#onlineLectCourseGrid col.subj_cde {display:none;}
+html>/**/body div#onlineLectCourseGrid .subj_cde {display:none;}
+div#onlineLectCourseGrid col.sub_class_cde {display:none;}
+html>/**/body div#onlineLectCourseGrid .sub_class_cde {display:none;}
+div#onlineLectCourseGrid col.subj_div_updt_yn {display:none;}
+html>/**/body div#onlineLectCourseGrid .subj_div_updt_yn {display:none;}
+div#onlineLectCourseGrid col.close_dt {display:none;}
+html>/**/body div#onlineLectCourseGrid .close_dt {display:none;}
+</style></div>
+<script type="text/javascript">
+var onlineLectCourseGrid = new DataGrid( 'onlineLectCourseGrid', 'listOnlineLectCourse.action', '.action', 'renderCell.action', 'onlineLectCourseColumns', 'onlineLectCourses', '', '', '', 'onlineLectCourseNotFoundMessage', 'capcha_img, capcha_cde, subj_class_cde,\
+		    subj_nm, subj_div_cde, unit, repl_cmpl_yr_trm, lect_wk_tm, lect_quota, lect_req_cnt', false, false, false, 'null', 10, 10, false, false, false );
+</script>
+
+	</div>
+
+	<!-- 버튼 영역 -->
+	<div class="tit_area"><span class="tit_area_r">03</span> 수강신청목록
+ </div>
+	
+	<div class="btn_position" style="margin-top: 108px;">
+		<button class="btn_wr" id="btn_modify" onclick="doModify();" type="button" style="color: rgb(50, 82, 115); cursor: pointer;">수정
+</button>
+		<button class="btn_cc" id="btn_delete" onclick="doDelete();" type="button" style="color: rgb(50, 82, 115); cursor: pointer;">삭제
+</button>
+	</div>
+	
+	<!-- 수강신청목록 그리드 영역 -->
+	<div class="grid_box">
+		<div id="onlineLectReqGrid" class="grid" style="width: 823px; height: 220px;"><div class="title" id="" style="width: 806px;"><table style="width: 806px;"><colgroup><col class="checked"><col class="subj_class_cde"><col class="subj_nm"><col class="subj_div_cde"><col class="unit"><col class="repl_cmpl_yr_trm"><col class="lect_wk_tm"><col class="lect_quota"><col class="lect_req_cnt"><col class="del_not_yn"><col class="open_yr_trm"><col class="subj_cde"><col class="sub_class_cde"><col class="lect_req_div_cde"><col class="lect_req_sts_cde"><col class="stu_nbr"><col class="repl_cmpl_yn"></colgroup><tbody><tr><th class="checked">삭제<br>선택</th><th class="subj_class_cde">교과목번호</th><th class="subj_nm">교과목명</th><th class="subj_div_cde">교과구분</th><th class="unit">학점</th><th class="repl_cmpl_yr_trm">재이수</th><th class="lect_wk_tm">강의시간</th><th class="lect_quota">제한인원</th><th class="lect_req_cnt">수강인원</th><th class="del_not_yn">삭제불가여부</th><th class="open_yr_trm">개설년도/학기</th><th class="subj_cde">과목코드</th><th class="sub_class_cde">분반코드</th><th class="lect_req_div_cde">수강신청구분</th><th class="lect_req_sts_cde">수강신청상태</th><th class="stu_nbr">학번</th><th class="repl_cmpl_yn">재이수</th></tr></tbody></table></div><div class="data" style="width: 823px;"><table style="width: 806px;"><colgroup><col class="checked"><col class="subj_class_cde"><col class="subj_nm"><col class="subj_div_cde"><col class="unit"><col class="repl_cmpl_yr_trm"><col class="lect_wk_tm"><col class="lect_quota"><col class="lect_req_cnt"><col class="del_not_yn"><col class="open_yr_trm"><col class="subj_cde"><col class="sub_class_cde"><col class="lect_req_div_cde"><col class="lect_req_sts_cde"><col class="stu_nbr"><col class="repl_cmpl_yn"></colgroup><tbody><tr><th class="checked"><input id="onlineLectReqGrid_checked" onclick="onlineLectReqGrid.checkAll( this.checked );" type="checkbox"></th><th class="subj_class_cde">교과목번호</th><th class="subj_nm">교과목명</th><th class="subj_div_cde">교과구분</th><th class="unit">학점</th><th class="repl_cmpl_yr_trm">재이수</th><th class="lect_wk_tm">강의시간</th><th class="lect_quota">제한인원</th><th class="lect_req_cnt">수강인원</th><th class="del_not_yn">삭제불가여부</th><th class="open_yr_trm">개설년도/학기</th><th class="subj_cde">과목코드</th><th class="sub_class_cde">분반코드</th><th class="lect_req_div_cde">수강신청구분</th><th class="lect_req_sts_cde">수강신청상태</th><th class="stu_nbr">학번</th><th class="repl_cmpl_yn">재이수</th></tr><tr id="onlineLectReqGrid_0" ondblclick="onlineLectReqGrid.executeHandlerOnRowDblClick( 0 );" onclick="onlineLectReqGrid.selectRow( 0 );" class="data selected"><td class="checked"><input onclick="onlineLectReqGrid.check( 0 );" class="checked" type="checkbox"></td><td class="subj_class_cde" currentvalue="COMP205001" originalvalue="COMP205001">COMP205001</td><td class="subj_nm" currentvalue="기초창의공학설계" originalvalue="기초창의공학설계">기초창의공학설계</td><td class="subj_div_cde" currentvalue="51" originalvalue="51"><select class="subj_div_cde" onfocus="onlineLectReqGrid.selectRowOfEditor( this );" onchange="onlineLectReqGrid.applyChanging( &#39;subj_div_cde&#39;, this );"><option value=""></option><option value="01">교양</option><option value="02">전공기초</option><option value="04">전공</option><option value="05">부전공</option><option value="06">복수전공</option><option value="07">교직</option><option value="10">연계전공</option><option value="12">전공필수</option><option value="26">교과교육</option><option value="27">융합전공</option><option value="28">전공심화</option><option value="29">일반선택</option><option selected="selected" value="51">공학전공</option><option value="52">전공기반</option><option value="53">기본소양</option></select></td><td class="unit" currentvalue="3" originalvalue="3">3</td><td class="repl_cmpl_yr_trm" currentvalue="" originalvalue=""></td><td class="lect_wk_tm" currentvalue="수 14:00 ~ 15:00&lt;BR&gt;수 15:00 ~ 16:00&lt;BR&gt;수 16:00 ~ 17:00&lt;BR&gt;수 17:00 ~ 18:00&lt;BR&gt;" originalvalue="수 14:00 ~ 15:00&lt;BR&gt;수 15:00 ~ 16:00&lt;BR&gt;수 16:00 ~ 17:00&lt;BR&gt;수 17:00 ~ 18:00&lt;BR&gt;">수 14:00 ~ 15:00<br>수 15:00 ~ 16:00<br>수 16:00 ~ 17:00<br>수 17:00 ~ 18:00<br></td><td class="lect_quota" currentvalue="40" originalvalue="40">40</td><td class="lect_req_cnt" currentvalue="36" originalvalue="36">36</td><td class="del_not_yn" currentvalue="0" originalvalue="0">0</td><td class="open_yr_trm" currentvalue="20212" originalvalue="20212">20212</td><td class="subj_cde" currentvalue="COMP205" originalvalue="COMP205">COMP205</td><td class="sub_class_cde" currentvalue="001" originalvalue="001">001</td><td class="lect_req_div_cde" currentvalue="2" originalvalue="2">2</td><td class="lect_req_sts_cde" currentvalue="01" originalvalue="01">01</td><td class="stu_nbr" currentvalue="2019114538" originalvalue="2019114538">2019114538</td><td class="repl_cmpl_yn" currentvalue="" originalvalue=""></td></tr><tr id="onlineLectReqGrid_1" ondblclick="onlineLectReqGrid.executeHandlerOnRowDblClick( 1 );" onclick="onlineLectReqGrid.selectRow( 1 );" class="data"><td class="checked"><input onclick="onlineLectReqGrid.check( 1 );" class="checked" type="checkbox"></td><td class="subj_class_cde" currentvalue="COMP224002" originalvalue="COMP224002">COMP224002</td><td class="subj_nm" currentvalue="소프트웨어설계" originalvalue="소프트웨어설계">소프트웨어설계</td><td class="subj_div_cde" currentvalue="51" originalvalue="51"><select class="subj_div_cde" onfocus="onlineLectReqGrid.selectRowOfEditor( this );" onchange="onlineLectReqGrid.applyChanging( &#39;subj_div_cde&#39;, this );"><option value=""></option><option value="01">교양</option><option value="02">전공기초</option><option value="04">전공</option><option value="05">부전공</option><option value="06">복수전공</option><option value="07">교직</option><option value="10">연계전공</option><option value="12">전공필수</option><option value="26">교과교육</option><option value="27">융합전공</option><option value="28">전공심화</option><option value="29">일반선택</option><option selected="selected" value="51">공학전공</option><option value="52">전공기반</option><option value="53">기본소양</option></select></td><td class="unit" currentvalue="3" originalvalue="3">3</td><td class="repl_cmpl_yr_trm" currentvalue="" originalvalue=""></td><td class="lect_wk_tm" currentvalue="화 13:30 ~ 15:00&lt;BR&gt;목 15:00 ~ 16:30&lt;BR&gt;" originalvalue="화 13:30 ~ 15:00&lt;BR&gt;목 15:00 ~ 16:30&lt;BR&gt;">화 13:30 ~ 15:00<br>목 15:00 ~ 16:30<br></td><td class="lect_quota" currentvalue="40" originalvalue="40">40</td><td class="lect_req_cnt" currentvalue="40" originalvalue="40">40</td><td class="del_not_yn" currentvalue="0" originalvalue="0">0</td><td class="open_yr_trm" currentvalue="20212" originalvalue="20212">20212</td><td class="subj_cde" currentvalue="COMP224" originalvalue="COMP224">COMP224</td><td class="sub_class_cde" currentvalue="002" originalvalue="002">002</td><td class="lect_req_div_cde" currentvalue="1" originalvalue="1">1</td><td class="lect_req_sts_cde" currentvalue="01" originalvalue="01">01</td><td class="stu_nbr" currentvalue="2019114538" originalvalue="2019114538">2019114538</td><td class="repl_cmpl_yn" currentvalue="" originalvalue=""></td></tr><tr id="onlineLectReqGrid_2" ondblclick="onlineLectReqGrid.executeHandlerOnRowDblClick( 2 );" onclick="onlineLectReqGrid.selectRow( 2 );" class="data"><td class="checked"><input onclick="onlineLectReqGrid.check( 2 );" class="checked" type="checkbox"></td><td class="subj_class_cde" currentvalue="COMP322005" originalvalue="COMP322005">COMP322005</td><td class="subj_nm" currentvalue="데이타베이스" originalvalue="데이타베이스">데이타베이스</td><td class="subj_div_cde" currentvalue="51" originalvalue="51"><select class="subj_div_cde" onfocus="onlineLectReqGrid.selectRowOfEditor( this );" onchange="onlineLectReqGrid.applyChanging( &#39;subj_div_cde&#39;, this );"><option value=""></option><option value="01">교양</option><option value="02">전공기초</option><option value="04">전공</option><option value="05">부전공</option><option value="06">복수전공</option><option value="07">교직</option><option value="10">연계전공</option><option value="12">전공필수</option><option value="26">교과교육</option><option value="27">융합전공</option><option value="28">전공심화</option><option value="29">일반선택</option><option selected="selected" value="51">공학전공</option><option value="52">전공기반</option><option value="53">기본소양</option></select></td><td class="unit" currentvalue="3" originalvalue="3">3</td><td class="repl_cmpl_yr_trm" currentvalue="" originalvalue=""></td><td class="lect_wk_tm" currentvalue="목 09:00 ~ 10:00&lt;BR&gt;목 10:00 ~ 11:00&lt;BR&gt;목 11:00 ~ 12:00&lt;BR&gt;목 12:00 ~ 13:00&lt;BR&gt;" originalvalue="목 09:00 ~ 10:00&lt;BR&gt;목 10:00 ~ 11:00&lt;BR&gt;목 11:00 ~ 12:00&lt;BR&gt;목 12:00 ~ 13:00&lt;BR&gt;">목 09:00 ~ 10:00<br>목 10:00 ~ 11:00<br>목 11:00 ~ 12:00<br>목 12:00 ~ 13:00<br></td><td class="lect_quota" currentvalue="40" originalvalue="40">40</td><td class="lect_req_cnt" currentvalue="40" originalvalue="40">40</td><td class="del_not_yn" currentvalue="0" originalvalue="0">0</td><td class="open_yr_trm" currentvalue="20212" originalvalue="20212">20212</td><td class="subj_cde" currentvalue="COMP322" originalvalue="COMP322">COMP322</td><td class="sub_class_cde" currentvalue="005" originalvalue="005">005</td><td class="lect_req_div_cde" currentvalue="1" originalvalue="1">1</td><td class="lect_req_sts_cde" currentvalue="01" originalvalue="01">01</td><td class="stu_nbr" currentvalue="2019114538" originalvalue="2019114538">2019114538</td><td class="repl_cmpl_yn" currentvalue="" originalvalue=""></td></tr><tr id="onlineLectReqGrid_3" ondblclick="onlineLectReqGrid.executeHandlerOnRowDblClick( 3 );" onclick="onlineLectReqGrid.selectRow( 3 );" class="data"><td class="checked"><input onclick="onlineLectReqGrid.check( 3 );" class="checked" type="checkbox"></td><td class="subj_class_cde" currentvalue="COMP328003" originalvalue="COMP328003">COMP328003</td><td class="subj_nm" currentvalue="모바일앱프로그래밍1" originalvalue="모바일앱프로그래밍1">모바일앱프로그래밍1</td><td class="subj_div_cde" currentvalue="51" originalvalue="51"><select class="subj_div_cde" onfocus="onlineLectReqGrid.selectRowOfEditor( this );" onchange="onlineLectReqGrid.applyChanging( &#39;subj_div_cde&#39;, this );"><option value=""></option><option value="01">교양</option><option value="02">전공기초</option><option value="04">전공</option><option value="05">부전공</option><option value="06">복수전공</option><option value="07">교직</option><option value="10">연계전공</option><option value="12">전공필수</option><option value="26">교과교육</option><option value="27">융합전공</option><option value="28">전공심화</option><option value="29">일반선택</option><option selected="selected" value="51">공학전공</option><option value="52">전공기반</option><option value="53">기본소양</option></select></td><td class="unit" currentvalue="3" originalvalue="3">3</td><td class="repl_cmpl_yr_trm" currentvalue="" originalvalue=""></td><td class="lect_wk_tm" currentvalue="월 09:00 ~ 10:00&lt;BR&gt;월 10:00 ~ 11:00&lt;BR&gt;월 11:00 ~ 12:00&lt;BR&gt;월 12:00 ~ 13:00&lt;BR&gt;" originalvalue="월 09:00 ~ 10:00&lt;BR&gt;월 10:00 ~ 11:00&lt;BR&gt;월 11:00 ~ 12:00&lt;BR&gt;월 12:00 ~ 13:00&lt;BR&gt;">월 09:00 ~ 10:00<br>월 10:00 ~ 11:00<br>월 11:00 ~ 12:00<br>월 12:00 ~ 13:00<br></td><td class="lect_quota" currentvalue="40" originalvalue="40">40</td><td class="lect_req_cnt" currentvalue="40" originalvalue="40">40</td><td class="del_not_yn" currentvalue="0" originalvalue="0">0</td><td class="open_yr_trm" currentvalue="20212" originalvalue="20212">20212</td><td class="subj_cde" currentvalue="COMP328" originalvalue="COMP328">COMP328</td><td class="sub_class_cde" currentvalue="003" originalvalue="003">003</td><td class="lect_req_div_cde" currentvalue="1" originalvalue="1">1</td><td class="lect_req_sts_cde" currentvalue="01" originalvalue="01">01</td><td class="stu_nbr" currentvalue="2019114538" originalvalue="2019114538">2019114538</td><td class="repl_cmpl_yn" currentvalue="" originalvalue=""></td></tr><tr id="onlineLectReqGrid_4" ondblclick="onlineLectReqGrid.executeHandlerOnRowDblClick( 4 );" onclick="onlineLectReqGrid.selectRow( 4 );" class="data"><td class="checked"><input onclick="onlineLectReqGrid.check( 4 );" class="checked" type="checkbox"></td><td class="subj_class_cde" currentvalue="COMP411007" originalvalue="COMP411007">COMP411007</td><td class="subj_nm" currentvalue="컴퓨터구조" originalvalue="컴퓨터구조">컴퓨터구조</td><td class="subj_div_cde" currentvalue="51" originalvalue="51"><select class="subj_div_cde" onfocus="onlineLectReqGrid.selectRowOfEditor( this );" onchange="onlineLectReqGrid.applyChanging( &#39;subj_div_cde&#39;, this );"><option value=""></option><option value="01">교양</option><option value="02">전공기초</option><option value="04">전공</option><option value="05">부전공</option><option value="06">복수전공</option><option value="07">교직</option><option value="10">연계전공</option><option value="12">전공필수</option><option value="26">교과교육</option><option value="27">융합전공</option><option value="28">전공심화</option><option value="29">일반선택</option><option selected="selected" value="51">공학전공</option><option value="52">전공기반</option><option value="53">기본소양</option></select></td><td class="unit" currentvalue="3" originalvalue="3">3</td><td class="repl_cmpl_yr_trm" currentvalue="" originalvalue=""></td><td class="lect_wk_tm" currentvalue="화 15:00 ~ 16:30&lt;BR&gt;목 13:30 ~ 15:00&lt;BR&gt;" originalvalue="화 15:00 ~ 16:30&lt;BR&gt;목 13:30 ~ 15:00&lt;BR&gt;">화 15:00 ~ 16:30<br>목 13:30 ~ 15:00<br></td><td class="lect_quota" currentvalue="60" originalvalue="60">60</td><td class="lect_req_cnt" currentvalue="60" originalvalue="60">60</td><td class="del_not_yn" currentvalue="0" originalvalue="0">0</td><td class="open_yr_trm" currentvalue="20212" originalvalue="20212">20212</td><td class="subj_cde" currentvalue="COMP411" originalvalue="COMP411">COMP411</td><td class="sub_class_cde" currentvalue="007" originalvalue="007">007</td><td class="lect_req_div_cde" currentvalue="2" originalvalue="2">2</td><td class="lect_req_sts_cde" currentvalue="01" originalvalue="01">01</td><td class="stu_nbr" currentvalue="2019114538" originalvalue="2019114538">2019114538</td><td class="repl_cmpl_yn" currentvalue="" originalvalue=""></td></tr><tr id="onlineLectReqGrid_5" ondblclick="onlineLectReqGrid.executeHandlerOnRowDblClick( 5 );" onclick="onlineLectReqGrid.selectRow( 5 );" class="data"><td class="checked"><input onclick="onlineLectReqGrid.check( 5 );" class="checked" type="checkbox"></td><td class="subj_class_cde" currentvalue="ELEC462003" originalvalue="ELEC462003">ELEC462003</td><td class="subj_nm" currentvalue="시스템프로그래밍" originalvalue="시스템프로그래밍">시스템프로그래밍</td><td class="subj_div_cde" currentvalue="51" originalvalue="51"><select class="subj_div_cde" onfocus="onlineLectReqGrid.selectRowOfEditor( this );" onchange="onlineLectReqGrid.applyChanging( &#39;subj_div_cde&#39;, this );"><option value=""></option><option value="01">교양</option><option value="02">전공기초</option><option value="04">전공</option><option value="05">부전공</option><option value="06">복수전공</option><option value="07">교직</option><option value="10">연계전공</option><option value="12">전공필수</option><option value="26">교과교육</option><option value="27">융합전공</option><option value="28">전공심화</option><option value="29">일반선택</option><option selected="selected" value="51">공학전공</option><option value="52">전공기반</option><option value="53">기본소양</option></select></td><td class="unit" currentvalue="3" originalvalue="3">3</td><td class="repl_cmpl_yr_trm" currentvalue="" originalvalue=""></td><td class="lect_wk_tm" currentvalue="금 09:00 ~ 10:00&lt;BR&gt;금 10:00 ~ 11:00&lt;BR&gt;금 11:00 ~ 12:00&lt;BR&gt;금 12:00 ~ 13:00&lt;BR&gt;" originalvalue="금 09:00 ~ 10:00&lt;BR&gt;금 10:00 ~ 11:00&lt;BR&gt;금 11:00 ~ 12:00&lt;BR&gt;금 12:00 ~ 13:00&lt;BR&gt;">금 09:00 ~ 10:00<br>금 10:00 ~ 11:00<br>금 11:00 ~ 12:00<br>금 12:00 ~ 13:00<br></td><td class="lect_quota" currentvalue="40" originalvalue="40">40</td><td class="lect_req_cnt" currentvalue="40" originalvalue="40">40</td><td class="del_not_yn" currentvalue="0" originalvalue="0">0</td><td class="open_yr_trm" currentvalue="20212" originalvalue="20212">20212</td><td class="subj_cde" currentvalue="ELEC462" originalvalue="ELEC462">ELEC462</td><td class="sub_class_cde" currentvalue="003" originalvalue="003">003</td><td class="lect_req_div_cde" currentvalue="2" originalvalue="2">2</td><td class="lect_req_sts_cde" currentvalue="01" originalvalue="01">01</td><td class="stu_nbr" currentvalue="2019114538" originalvalue="2019114538">2019114538</td><td class="repl_cmpl_yn" currentvalue="" originalvalue=""></td></tr><tr id="onlineLectReqGrid_6" ondblclick="onlineLectReqGrid.executeHandlerOnRowDblClick( 6 );" onclick="onlineLectReqGrid.selectRow( 6 );" class="data"><td class="checked"><input onclick="onlineLectReqGrid.check( 6 );" class="checked" type="checkbox"></td><td class="subj_class_cde" currentvalue="ITEC423002" originalvalue="ITEC423002">ITEC423002</td><td class="subj_nm" currentvalue="자료구조프로그래밍" originalvalue="자료구조프로그래밍">자료구조프로그래밍</td><td class="subj_div_cde" currentvalue="51" originalvalue="51"><select class="subj_div_cde" onfocus="onlineLectReqGrid.selectRowOfEditor( this );" onchange="onlineLectReqGrid.applyChanging( &#39;subj_div_cde&#39;, this );"><option value=""></option><option value="01">교양</option><option value="02">전공기초</option><option value="04">전공</option><option value="05">부전공</option><option value="06">복수전공</option><option value="07">교직</option><option value="10">연계전공</option><option value="12">전공필수</option><option value="26">교과교육</option><option value="27">융합전공</option><option value="28">전공심화</option><option value="29">일반선택</option><option selected="selected" value="51">공학전공</option><option value="52">전공기반</option><option value="53">기본소양</option></select></td><td class="unit" currentvalue="3" originalvalue="3">3</td><td class="repl_cmpl_yr_trm" currentvalue="" originalvalue=""></td><td class="lect_wk_tm" currentvalue="금 14:00 ~ 15:00&lt;BR&gt;금 15:00 ~ 16:00&lt;BR&gt;금 16:00 ~ 17:00&lt;BR&gt;금 17:00 ~ 18:00&lt;BR&gt;" originalvalue="금 14:00 ~ 15:00&lt;BR&gt;금 15:00 ~ 16:00&lt;BR&gt;금 16:00 ~ 17:00&lt;BR&gt;금 17:00 ~ 18:00&lt;BR&gt;">금 14:00 ~ 15:00<br>금 15:00 ~ 16:00<br>금 16:00 ~ 17:00<br>금 17:00 ~ 18:00<br></td><td class="lect_quota" currentvalue="40" originalvalue="40">40</td><td class="lect_req_cnt" currentvalue="40" originalvalue="40">40</td><td class="del_not_yn" currentvalue="0" originalvalue="0">0</td><td class="open_yr_trm" currentvalue="20212" originalvalue="20212">20212</td><td class="subj_cde" currentvalue="ITEC423" originalvalue="ITEC423">ITEC423</td><td class="sub_class_cde" currentvalue="002" originalvalue="002">002</td><td class="lect_req_div_cde" currentvalue="2" originalvalue="2">2</td><td class="lect_req_sts_cde" currentvalue="01" originalvalue="01">01</td><td class="stu_nbr" currentvalue="2019114538" originalvalue="2019114538">2019114538</td><td class="repl_cmpl_yn" currentvalue="" originalvalue=""></td></tr></tbody></table></div><style type="text/css">div#onlineLectReqGrid col.del_not_yn {display:none;}
+html>/**/body div#onlineLectReqGrid .del_not_yn {display:none;}
+div#onlineLectReqGrid col.open_yr_trm {display:none;}
+html>/**/body div#onlineLectReqGrid .open_yr_trm {display:none;}
+div#onlineLectReqGrid col.subj_cde {display:none;}
+html>/**/body div#onlineLectReqGrid .subj_cde {display:none;}
+div#onlineLectReqGrid col.sub_class_cde {display:none;}
+html>/**/body div#onlineLectReqGrid .sub_class_cde {display:none;}
+div#onlineLectReqGrid col.lect_req_div_cde {display:none;}
+html>/**/body div#onlineLectReqGrid .lect_req_div_cde {display:none;}
+div#onlineLectReqGrid col.lect_req_sts_cde {display:none;}
+html>/**/body div#onlineLectReqGrid .lect_req_sts_cde {display:none;}
+div#onlineLectReqGrid col.stu_nbr {display:none;}
+html>/**/body div#onlineLectReqGrid .stu_nbr {display:none;}
+div#onlineLectReqGrid col.repl_cmpl_yn {display:none;}
+html>/**/body div#onlineLectReqGrid .repl_cmpl_yn {display:none;}
+</style></div>
+<script type="text/javascript">
+var onlineLectReqGrid = new DataGrid( 'onlineLectReqGrid', 'listOnlineLectReq.action', '.action', 'renderCell.action', 'onlineLectReqColumns', 'onlineLectReqs', '', '', '', 'onlineLectReqNotFoundMessage', 'subj_class_cde, subj_nm, subj_div_cde,\
+		    repl_cmpl_yr_trm, unit, lect_wk_tm, lect_quota, lect_req_cnt', true, false, false, 'null', 10, 10, false, false, false );
+</script>
+
+
+	</div>
+
+	<!-- 버튼 영역 -->
+	<div class="tit_area"><span class="tit_area_r">04</span> 수강꾸러미목록
+ </div>
+		
+		<ul id="info">
+		
+		  <li> 수강신청의 <font class="txt_red">"신청"을 500회 이상</font> 클릭 시 "수강꾸러미목록"에서 <font class="txt_red">해당 과목이 삭제</font>됩니다.</li>
+		  <li> ※ 만약 수강꾸러미목록에서 삭제된 교과목을 수강신청하려면 위의 "교과목검색"에서 수강신청 할 수 있음</li>
+		
+		
+		</ul>
+
+	<!-- 수강꾸러미신청목록 그리드 영역 -->
+	<div class="grid_box">
+		<div id="lectPackReqGrid" class="grid" style="width: 823px; height: 180px;"><div class="title" id="" style="width: 806px;"><table style="width: 806px;"><colgroup><col class="subj_class_cde"><col class="subj_nm"><col class="subj_div_cde"><col class="subj_div_cde_nm"><col class="unit"><col class="repl_cmpl_yr_trm"><col class="lect_wk_tm"><col class="lect_quota"><col class="lect_req_cnt"><col class="ins_clck_nbr"><col class="button"><col class="del_not_yn"><col class="open_yr_trm"><col class="subj_cde"><col class="sub_class_cde"><col class="lect_req_div_cde"><col class="lect_req_sts_cde"><col class="stu_nbr"><col class="repl_cmpl_yn"></colgroup><tbody><tr><th class="subj_class_cde">교과목번호</th><th class="subj_nm">교과목명</th><th class="subj_div_cde">교과구분</th><th class="subj_div_cde_nm">교과구분</th><th class="unit">학점</th><th class="repl_cmpl_yr_trm">재이수</th><th class="lect_wk_tm">강의시간</th><th class="lect_quota">제한인원</th><th class="lect_req_cnt">수강인원</th><th class="ins_clck_nbr">신청클릭횟수</th><th class="button">수강신청</th><th class="del_not_yn">삭제불가여부</th><th class="open_yr_trm">개설년도/학기</th><th class="subj_cde">과목코드</th><th class="sub_class_cde">분반코드</th><th class="lect_req_div_cde">수강신청구분</th><th class="lect_req_sts_cde">수강신청상태</th><th class="stu_nbr">학번</th><th class="repl_cmpl_yn">재이수</th></tr></tbody></table></div><div class="data" style="width: 823px;"><table style="width: 806px;"><colgroup><col class="subj_class_cde"><col class="subj_nm"><col class="subj_div_cde"><col class="subj_div_cde_nm"><col class="unit"><col class="repl_cmpl_yr_trm"><col class="lect_wk_tm"><col class="lect_quota"><col class="lect_req_cnt"><col class="ins_clck_nbr"><col class="button"><col class="del_not_yn"><col class="open_yr_trm"><col class="subj_cde"><col class="sub_class_cde"><col class="lect_req_div_cde"><col class="lect_req_sts_cde"><col class="stu_nbr"><col class="repl_cmpl_yn"></colgroup><tbody><tr><th class="subj_class_cde">교과목번호</th><th class="subj_nm">교과목명</th><th class="subj_div_cde">교과구분</th><th class="subj_div_cde_nm">교과구분</th><th class="unit">학점</th><th class="repl_cmpl_yr_trm">재이수</th><th class="lect_wk_tm">강의시간</th><th class="lect_quota">제한인원</th><th class="lect_req_cnt">수강인원</th><th class="ins_clck_nbr">신청클릭횟수</th><th class="button">수강신청</th><th class="del_not_yn">삭제불가여부</th><th class="open_yr_trm">개설년도/학기</th><th class="subj_cde">과목코드</th><th class="sub_class_cde">분반코드</th><th class="lect_req_div_cde">수강신청구분</th><th class="lect_req_sts_cde">수강신청상태</th><th class="stu_nbr">학번</th><th class="repl_cmpl_yn">재이수</th></tr><tr id="lectPackReqGrid_0" ondblclick="lectPackReqGrid.executeHandlerOnRowDblClick( 0 );" onclick="lectPackReqGrid.selectRow( 0 );" class="data"><td class="subj_class_cde" currentvalue="COMP225001" originalvalue="COMP225001">COMP225001</td><td class="subj_nm" currentvalue="디지털설계및실험" originalvalue="디지털설계및실험">디지털설계및실험</td><td class="subj_div_cde" currentvalue="51" originalvalue="51">51</td><td class="subj_div_cde_nm" currentvalue="공학전공" originalvalue="공학전공">공학전공</td><td class="unit" currentvalue="3" originalvalue="3">3</td><td class="repl_cmpl_yr_trm" currentvalue="" originalvalue=""></td><td class="lect_wk_tm" currentvalue="화 09:00 ~ 10:00&lt;BR&gt;화 10:00 ~ 11:00&lt;BR&gt;화 11:00 ~ 12:00&lt;BR&gt;화 12:00 ~ 13:00&lt;BR&gt;" originalvalue="화 09:00 ~ 10:00&lt;BR&gt;화 10:00 ~ 11:00&lt;BR&gt;화 11:00 ~ 12:00&lt;BR&gt;화 12:00 ~ 13:00&lt;BR&gt;">화 09:00 ~ 10:00<br>화 10:00 ~ 11:00<br>화 11:00 ~ 12:00<br>화 12:00 ~ 13:00<br></td><td class="lect_quota" currentvalue="40" originalvalue="40">40</td><td class="lect_req_cnt" currentvalue="40" originalvalue="40">40</td><td class="ins_clck_nbr" currentvalue="4" originalvalue="4">4</td><td class="button" currentvalue="" originalvalue=""><a href="javascript:doAddFromPack();">신청</a></td><td class="del_not_yn" currentvalue="" originalvalue=""></td><td class="open_yr_trm" currentvalue="20212" originalvalue="20212">20212</td><td class="subj_cde" currentvalue="COMP225" originalvalue="COMP225">COMP225</td><td class="sub_class_cde" currentvalue="001" originalvalue="001">001</td><td class="lect_req_div_cde" currentvalue="" originalvalue=""></td><td class="lect_req_sts_cde" currentvalue="01" originalvalue="01">01</td><td class="stu_nbr" currentvalue="2019114538" originalvalue="2019114538">2019114538</td><td class="repl_cmpl_yn" currentvalue="" originalvalue=""></td></tr></tbody></table></div><style type="text/css">div#lectPackReqGrid col.subj_div_cde {display:none;}
+html>/**/body div#lectPackReqGrid .subj_div_cde {display:none;}
+div#lectPackReqGrid col.del_not_yn {display:none;}
+html>/**/body div#lectPackReqGrid .del_not_yn {display:none;}
+div#lectPackReqGrid col.open_yr_trm {display:none;}
+html>/**/body div#lectPackReqGrid .open_yr_trm {display:none;}
+div#lectPackReqGrid col.subj_cde {display:none;}
+html>/**/body div#lectPackReqGrid .subj_cde {display:none;}
+div#lectPackReqGrid col.sub_class_cde {display:none;}
+html>/**/body div#lectPackReqGrid .sub_class_cde {display:none;}
+div#lectPackReqGrid col.lect_req_div_cde {display:none;}
+html>/**/body div#lectPackReqGrid .lect_req_div_cde {display:none;}
+div#lectPackReqGrid col.lect_req_sts_cde {display:none;}
+html>/**/body div#lectPackReqGrid .lect_req_sts_cde {display:none;}
+div#lectPackReqGrid col.stu_nbr {display:none;}
+html>/**/body div#lectPackReqGrid .stu_nbr {display:none;}
+div#lectPackReqGrid col.repl_cmpl_yn {display:none;}
+html>/**/body div#lectPackReqGrid .repl_cmpl_yn {display:none;}
+</style></div>
+<script type="text/javascript">
+var lectPackReqGrid = new DataGrid( 'lectPackReqGrid', 'listLectPackReq.action', '.action', 'renderCell.action', 'lectPackReqColumns', 'lectPackReqs', '', '', '', 'lectPackReqNotFoundMessage', 'subj_class_cde, subj_nm, subj_div_cde_nm,\
+		    repl_cmpl_yr_trm, unit, lect_wk_tm, lect_quota, lect_req_cnt, ins_clck_nbr, button', false, false, false, 'null', 10, 10, false, false, false );
+</script>
+
+
+	</div>
+	
+
+<ul id="info">
+
+<li> <font class="txt_red">부전공</font>의 신청은 수강신청에 의하므로, 수강신청시 학생이 직접 해당과목의 교과구분을 <font class="txt_red">부전공</font>으로 지정해야 함</li>
+
+
+<div class="iefix">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+</ul>	
+	<script type="text/javascript">
+	
+		
+		onlineLectCourseGrid.setSize(823,180);
+		onlineLectCourseGrid.setTableWidth(806);
+		onlineLectReqGrid.setSize(823,220);
+		onlineLectReqGrid.setTableWidth(806);
+		lectPackReqGrid.setSize(823,180);
+		lectPackReqGrid.setTableWidth(806);
+		
+		
+		
+		Utils.setEditable('stu_nbr', false);
+		Utils.setEditable('kor_nm', false);
+		Utils.setEditable('pstn_crse_cde_nm', false);
+		Utils.setEditable('cntl_unit_total', false);
+		Utils.setEditable('cntl_unit_1', false);
+		Utils.setEditable('cntl_unit_2', false);
+		Utils.setEditable('btn_add',false);
+
+		document.onLoad = doLoad();
+
+		// 초기 조회
+		function doLoad() {
+			Utils.setFieldValue('captcha_cde', '');
+			
+			doLoadOnlineLectCourseGrid();
+			doLoadOnlineLectReqGrid();
+			doLoadLectPackReqGrid();
+		}
+
+		// 그리드가 로드된 후 첫번째 행 선택
+		onlineLectCourseGrid.setHandlerOnLoad(
+			function( rowId ) {
+				doGridValueCheckForOnlineLectCourse();
+				checkOnlineLectCourseValue();
+//				Utils.focus('search_subj_class_cde');
+				onlineLectCourseGrid.selectRow(0);
+			}
+		);
+
+		// 강좌조회 그리드가 로드된 후 교과구분 및수정이 불가능한 경우 세팅
+		// 강좌조회 그리드가 로드된 후 삭제가 불가능한 경우 체크박스 disable 세팅
+		function doGridValueCheckForOnlineLectCourse(){
+			var rowCnt = onlineLectCourseGrid.getRowCount();
+			for(i=0; i<rowCnt; i++){
+				if ( onlineLectCourseGrid.getValue( i, 'close_dt' ) != '' ) {
+					
+					alert('폐강과목 입니다.');
+					
+					
+					
+					doInitOnlineLectCourseGrid();
+					return;
+				}				
+				if ( onlineLectCourseGrid.getValue( i, 'subj_div_updt_yn' ) == 'N' ) {
+					Utils.setEditable( onlineLectCourseGrid.getCellEditor( i, 'subj_div_cde' ), false );
+				}
+			}
+		}
+		
+		// 그리드 선택시 필수 입력사항은 수정을 할 수 없도록  disable처리
+		onlineLectCourseGrid.setHandlerOnRowClick(
+			function( rowId ) {
+				if ( onlineLectCourseGrid.isAddedRow( rowId ) ) {
+				} else {
+				}
+		    }
+		);
+		
+		// 그리드가 로드된 후 첫번째 행 선택
+		onlineLectReqGrid.setHandlerOnLoad(
+			function( rowId ) {
+				doGridValueCheckForOnlineLectReq();
+				checkOnlineLectReqValue();
+//				Utils.focus('search_subj_class_cde');
+				onlineLectReqGrid.selectRow(0);
+				
+				$('onlineLectReqGrid_checked').replace("삭제<BR>선택");
+				
+				
+			}
+		);
+
+		// 수강신청 그리드가 로드된 후 교과구분 수정이 불가능한 경우 세팅
+		function doGridValueCheckForOnlineLectReq(){
+			var rowCnt = onlineLectReqGrid.getRowCount();
+			for(i=0; i<rowCnt; i++){
+				if ( onlineLectReqGrid.getValue( i, 'del_not_yn' ) == '1' ) {
+					Utils.setEditable( onlineLectReqGrid.getCellEditor( i, 'checked' ), false );
+				}
+			}
+		}
+
+		// 그리드 선택시 필수 입력사항은 수정을 할 수 없도록  disable처리
+		onlineLectReqGrid.setHandlerOnRowClick(
+			function( rowId ) {
+				if ( onlineLectReqGrid.isAddedRow( rowId ) ) {
+				} else {
+				}
+		    }
+		);
+		
+		// 조회 후 버튼 컨트롤
+		function checkOnlineLectCourseValue()
+		{
+			var rowCnt = onlineLectCourseGrid.getRowCount();
+			
+			// 그리드 조회 후 데이터가 한건도 없으면 삭제,저장버튼은 비활성화
+			if( rowCnt == 0 ){
+				if ( Utils.getFieldValue('search_subj_class_cde') != '' ) {
+					
+					alert('교과목 번호를 바르게 입력하여 주세요.');
+					
+					
+					
+					Utils.setFieldValue('search_subj_class_cde', '');
+				}
+				doButtonControlForLectCourse(true,true,false,false);
+			} else {
+				Utils.setFieldValue('search_subj_class_cde', '');
+// 2011.8.24(수) (수정-시작)
+//				Utils.setFieldValue('captcha_cde', '');
+// 2011.8.24(수) (수정-끝)
+				doButtonControlForLectCourse(false,false,true,true);
+				Utils.setEditable('search_subj_class_cde', false);
+				Utils.setEditable('captcha_cde', false);
+				window.focus();
+			}
+		}
+
+		// 조회 후 버튼 컨트롤
+		function checkOnlineLectReqValue()
+		{
+			var rowCnt = onlineLectReqGrid.getRowCount();
+			
+			// 그리드 조회 후 데이터가 한건도 없으면 삭제,저장버튼은 비활성화
+			if( rowCnt == 0 ){
+				doButtonControlForLectReq(false,false);
+			} else {
+				doButtonControlForLectReq(true,true);
+			}
+		}
+		function doEnterSearchSubj(){
+			Utils.focus('captcha_cde');
+			return false;
+		}	
+
+		// 검색한 강좌 조회
+		function doSearchCourse() {
+	    	var subj_class_cde = Utils.getFieldValue( 'search_subj_class_cde' ).toUpperCase();
+	    	var captcha_cde	   = Utils.getFieldValue('captcha_cde').toLowerCase();
+	    	
+	    	if(subj_class_cde == null || subj_class_cde == '' ||subj_class_cde.length <10){
+	    		
+	    		alert('교과목 번호 10자리를 입력하여 주세요.');
+				
+				
+				
+		    	return false;
+	    	}	
+
+			if ( captcha_cde == '' || captcha_cde == null ||captcha_cde.length <4){
+				
+				alert('자동입력방지문자 4자리를  입력하여 주세요.');
+				
+				
+				
+//				Utils.setFieldValue('captcha_cde', '');
+//				Utils.focus('captcha_cde'); 
+				return false;
+			}
+	    	
+
+	    	var result = requestData( 	'procOnlineLectReqForSelec',
+					{ 	
+						'onlineLectReq.open_yr_trm': '',
+						// 자동입력방지
+						'onlineLectReq.captcha_cde': captcha_cde,
+						'onlineLectReq.subj_class_cde': subj_class_cde,
+						'onlineLectReq.subj_cde': subj_class_cde.substr(0,7),
+						'onlineLectReq.sub_class_cde': subj_class_cde.substr(7),
+						'onlineLectReq.subj_div_cde': '',
+						'onlineLectReq.lect_req_div_cde': '',
+						'onlineLectReq.lect_req_sts_cde': '',
+						'onlineLectReq.stu_nbr': '',
+						'onlineLectReq.strt_stu_nbr_yr': '',
+						'onlineLectReq.div': ''
+					},
+					function( fieldName ) {
+						doCancel();
+						window.focus();
+					});
+
+	    	if ( result == null ) {
+	    		return false;
+			}else if ( result.substr(0, 1) == '0' ) {
+				doLoadOnlineLectCourseGrid();
+				return false;
+			}else if ( result.substr(0, 3) == '887' ) {  //서버의 자동입력방지 세션이 초기화 된경우,
+				
+				alert('자동입력방지 문자가 맞지 않습니다1.');
+				
+				
+				
+				refreshCapcha();
+				Utils.setFieldValue('captcha_cde', '');
+				window.focus();
+				return false;
+			}else if ( result.substr(0, 3) == '888' ) {
+				Utils.setFieldValue('captcha_cde', '');
+				
+				alert('자동입력방지 문자를 입력하여 주세요.');
+				
+				
+				
+				window.focus();
+				return false;
+			}else if ( result.substr(0, 3) == '889') {
+				Utils.setFieldValue('captcha_cde', '');
+				
+				alert('자동입력방지 문자가 맞지 않습니다.');
+				
+				
+				
+				window.focus();
+				return false;
+			}else if ( result.substr(0, 3) == '998' ) {
+				doCancel();
+				
+				alert('교과목 번호를 바르게 입력하여 주세요.');
+				
+				
+				
+				window.focus();
+				return false;
+			}else if ( result.substr(0, 3) == '997' || result.substr(0, 3) == '996') {
+				doCancel();
+				
+				alert('교과목 번호를 바르게 입력하여 주세요.(1)');
+				
+				
+				
+				window.focus();
+				return false;
+			}else if ( result.substr(0, 3) == '111' || result.substr(0, 3) == '132' ) {
+				doCancel();
+				alert( result.substr(3));
+				location.reload();
+				return false;
+			}else if ( result.substr(0, 1) != '0' ) {
+				doCancel();
+				alert( result.substr(3) );
+				window.focus();
+				return false;
+			}
+	    	
+		}
+
+		// 취소
+		function doCancel() {
+			Utils.setEditable('search_subj_class_cde', true);
+			Utils.setEditable('captcha_cde', true);
+			Utils.setFieldValue('search_subj_class_cde', '');
+			Utils.setFieldValue('captcha_cde', '');
+			refreshCapcha();
+//			Utils.focus('search_subj_class_cde');
+		}
+		
+		// 취소그리드
+		function doCancelGrid() {
+			doInitOnlineLectCourseGrid();
+			Utils.setFieldValue('captcha_cde', '');
+			Utils.focus('search_subj_class_cde');
+			refreshCapcha();
+		}
+
+		// 수강신청할 강좌내역 그리드 초기화
+		function doInitOnlineLectCourseGrid(){
+			onlineLectCourseGrid.deleteRow(0);
+//			onlineLectCourseGrid.save();
+			Utils.setEditable('search_subj_class_cde', true);
+			Utils.setEditable('captcha_cde', true);
+ 			Utils.setFieldValue('search_subj_class_cde', '');
+
+ 			Utils.setFieldValue('captcha_cde', '');
+						
+			doButtonControlForLectCourse(true,true,false,false);
+//			Utils.focus('search_subj_class_cde');
+			// 자동입력방지 적용소스
+//			$('captcha').src = '/Sugang/captcha?' + new Date().getTime();
+//			Utils.setFieldValue("captcha_cde","");
+		}
+
+		// 수강신청할 강좌내역 그리드 로드
+		function doLoadOnlineLectCourseGrid(){
+	    	var subj_class_cde = Utils.getFieldValue( 'search_subj_class_cde' ).toUpperCase();
+			onlineLectCourseGrid.load(
+					{
+						'onlineLectCourse.search_open_yr_trm': '',
+						'onlineLectCourse.search_subj_class_cde': subj_class_cde,
+						'onlineLectCourse.search_subj_cde': subj_class_cde.substr(0,7),
+						'onlineLectCourse.search_sub_class_cde': subj_class_cde.substr(7),
+						'onlineLectCourse.search_stu_div_cde': '',
+						'onlineLectCourse.search_stu_nbr': ''
+					}
+			);
+		}
+
+		// 수강신청내역 그리드 로드
+		function doLoadOnlineLectReqGrid(){
+			onlineLectReqGrid.load(
+					{
+						'onlineLectReq.search_open_yr_trm': '',
+						'onlineLectReq.search_stu_nbr': '',
+						'onlineLectReq.search_stu_div_cde': ''
+					}
+			);
+		}
+
+		// 수강꾸러미신청내역 그리드 로드
+		function doLoadLectPackReqGrid(){
+			lectPackReqGrid.load(
+					{
+						'onlineLectReq.search_open_yr_trm': '',
+						'onlineLectReq.search_stu_nbr': '',
+						'onlineLectReq.search_stu_div_cde': ''
+					}
+			);
+		}
+		
+		// 추가
+		function doAdd() {
+			<!--start netfunnel 적용 20.11.10.-->
+		NetFunnel_Action({action_id:"course_req"}, function(ev,ret){
+			<!--end netfunnel 적용 20.11.10.-->
+			// 과목/분반코드 입력 체크 및  
+			if ( Utils.getFieldValue('search_subj_class_cde') == '' && onlineLectCourseGrid.getRowCount() == 0 ){
+				
+				alert('교과목 번호를 바르게 입력하여 주세요.');
+				
+				
+				
+				Utils.setFieldValue('search_subj_class_cde', '');
+//				Utils.focus('search_subj_class_cde'); 
+				return false;
+			}
+			
+			// 대기열 입력 수강신청
+
+			var result = requestData( 	'procOnlineLectReqForInpt',
+									{ 	
+										'onlineLectReq.open_yr_trm': '',
+										// 자동입력방지
+										'onlineLectReq.captcha_cde': Utils.getFieldValue( 'captcha_cde' ).toLowerCase(),
+										'onlineLectReq.subj_cde': onlineLectCourseGrid.getValue( 0, 'subj_cde' ),
+										'onlineLectReq.sub_class_cde': onlineLectCourseGrid.getValue( 0, 'sub_class_cde' ),
+										'onlineLectReq.subj_div_cde': onlineLectCourseGrid.getValue( 0, 'subj_div_cde' ),
+										'onlineLectReq.lect_req_div_cde': '',
+										'onlineLectReq.lect_req_sts_cde': '',
+										'onlineLectReq.stu_nbr': '',
+										'onlineLectReq.strt_stu_nbr_yr': '',
+										'onlineLectReq.div': ''
+									},
+									function( fieldName ) {
+										Utils.focus( 'captcha_cde');
+									});
+			
+			<!--start netfunnel 적용 20.11.10.-->
+			NetFunnel_Complete();
+			<!--end netfunnel 적용 20.11.10.-->
+			if ( result == null ) {
+				return false;
+			}
+			if ( result.substr(0, 1) == '0' ) {
+				//저장 후 메시지를 서버에서 받음.. (2012.12.6)
+				if ( result.substr(1) == '' || result.substr(1) == null ) {
+					
+					alert('다시  신청하세요.');
+					
+					
+					
+				} else {
+					alert( result.substr(1) );
+				}
+				doInitOnlineLectCourseGrid();
+				doLoadOnlineLectReqGrid();
+				refreshCapcha();
+			}else if ( result.substr(0, 3) == '111' || result.substr(0, 3) == '132' ) {
+				alert( result.substr(3) );
+				location.reload();
+				return ;
+				// 2011.8.24(수정-시작)
+			}else if ( result.substr(0, 3) == '887' ) {  //서버의 자동입력방지 세션이 초기화 된경우,
+				
+				alert('자동입력방지 문자가 맞지 않습니다.');
+				
+				
+				
+				doInitOnlineLectCourseGrid();
+				window.focus();
+				return;
+			}else if ( result.substr(0, 3) == '888' ) {
+				
+				alert('자동입력방지 문자를 입력하여 주세요.');
+				
+				
+				
+				doInitOnlineLectCourseGrid();
+				window.focus();
+				return;
+			}else if ( result.substr(0, 3) == '889') {
+				
+				alert('자동입력방지 문자가 맞지 않습니다.');
+				
+				
+				
+				doInitOnlineLectCourseGrid();
+				window.focus();
+				return;
+			//2011.8.24(수정-끝)
+			}else if ( result.substr(0, 1) != '0' ) {
+				alert ( result.substr(3) );
+				doInitOnlineLectCourseGrid();
+//				refreshCapcha();
+				window.focus();
+				return ;
+			}
+			else if ( result.substr(0, 3) == '***' ) {
+				alert ( result.substr(3) );
+				
+/*				if ( confirm('수강대기자로 신청하시겠습니까?') ){
+					result = requestData(	'procOnlineLectReqForStndBy',
+										{ 	
+											'onlineLectReq.open_yr_trm': '',
+											'onlineLectReq.captcha_cde': Utils.getFieldValue( 'captcha_cde' ).toLowerCase(),
+											'onlineLectReq.subj_cde': onlineLectCourseGrid.getValue( 0, 'subj_cde' ),
+											'onlineLectReq.sub_class_cde': onlineLectCourseGrid.getValue( 0, 'sub_class_cde' ),
+											'onlineLectReq.subj_div_cde': onlineLectCourseGrid.getValue( 0, 'subj_div_cde' ),
+											'onlineLectReq.lect_req_div_cde': '',
+											'onlineLectReq.lect_req_sts_cde': '',
+											'onlineLectReq.stu_nbr': '',
+											'onlineLectReq.strt_stu_nbr_yr': '',
+											'onlineLectReq.div': ''
+										} 	);
+					alert("후보 "+result.substr(1)+" 번 대기자로 신청되었습니다.");
+					doInitOnlineLectCourseGrid();
+					doLoadOnlineLectReqGrid();
+					refreshCapcha();
+					return ;
+				}
+*/				
+				doInitOnlineLectCourseGrid();
+				refreshCapcha();
+			}
+			});
+		}
+
+		// 삭제
+		function doDelete() {
+			var rowCnt = onlineLectReqGrid.getRowCount();
+			var rowId = new Array();
+			var isDelete = false;
+			rowId = onlineLectReqGrid.getCheckedRowIds();
+			var result;
+			
+			if(rowCnt == 0){
+				
+				alert('삭제 할 목록이 없습니다.');
+				
+				
+				
+				return;
+			}
+			if ( rowId.length < 1 ) {
+				
+				alert('삭제할 행을 선택해 주세요.');
+				
+				
+				
+				return;
+			}
+			var confirmStr;
+			
+			confirmStr = '정말로 삭제 하시겠습니까?';
+			
+			
+			
+			if(confirm(confirmStr)){
+				for(i=0; i<rowId.length; i++){
+					onlineLectReqGrid.deleteRow( rowId[i] );
+					result = requestData( 	'procOnlineLectReqForDel',
+										{ 	
+											'onlineLectReq.open_yr_trm': '',
+											'onlineLectReq.subj_cde': onlineLectReqGrid.getValue( rowId[i], 'subj_cde' ),
+											'onlineLectReq.sub_class_cde': onlineLectReqGrid.getValue( rowId[i], 'sub_class_cde' ),
+											'onlineLectReq.subj_div_cde': onlineLectReqGrid.getValue( rowId[i], 'subj_div_cde' ),
+											'onlineLectReq.lect_req_div_cde': '',
+											'onlineLectReq.lect_req_sts_cde': '',
+											'onlineLectReq.stu_nbr': '',
+											'onlineLectReq.strt_stu_nbr_yr': '',
+											'onlineLectReq.div': ''
+										} );
+				}
+				if ( result.substr(0,1) == '0' ){
+					isDelete = true;
+//					doInitOnlineLectCourseGrid();
+//					doLoadOnlineLectReqGrid();
+//					doLoadLectPackReqGrid();
+				}
+				else if ( result.substr(0, 3) == '111' || result.substr(0, 3) == '132' ) {
+					alert( result.substr(3) );
+					location.reload();
+					return;
+				}
+				else if ( result.substr(0,1) != '0' ){
+					alert( result.substr(3) );
+					doLoadOnlineLectReqGrid();
+					doLoadLectPackReqGrid();
+					window.focus();
+					return;
+				}
+			}
+			if ( isDelete ) {
+				//저장 후 메시지를 서버에서 받음.. (2012.12.6)
+				if ( result.substr(1) == '' || result.substr(1) == null ) {
+					
+					alert('다시  삭제하세요.');
+					
+					
+					
+				} else {
+					alert( result.substr(1) );
+				}
+				doInitOnlineLectCourseGrid();
+				doLoadOnlineLectReqGrid();
+				doLoadLectPackReqGrid();
+			}else{
+				
+				alert('변경된 데이터가 없습니다.');
+				
+				
+				
+			}
+		}
+
+		// 수정
+		function doModify() {
+		
+			var rowCnt = onlineLectReqGrid.getRowCount();
+			var isModify = false;
+			if(rowCnt == 0){
+				
+				alert('수정 할 목록이 없습니다.');
+				
+				
+				
+				return;
+			}
+			for(i=0; i<rowCnt; i++){
+				// 수정된 행이면
+				if ( onlineLectReqGrid.isModifiedRow(i) ) {
+					var result = requestData( 	'procOnlineLectReqForUpdt',
+											{ 	
+												'onlineLectReq.open_yr_trm': '',
+												'onlineLectReq.subj_cde': onlineLectReqGrid.getValue( i, 'subj_cde' ),
+												'onlineLectReq.sub_class_cde': onlineLectReqGrid.getValue( i, 'sub_class_cde' ),
+												'onlineLectReq.subj_div_cde': onlineLectReqGrid.getValue( i, 'subj_div_cde' ),
+												'onlineLectReq.lect_req_div_cde': '',
+												'onlineLectReq.lect_req_sts_cde': '',
+												'onlineLectReq.stu_nbr': '',
+												'onlineLectReq.strt_stu_nbr_yr': '',
+												'onlineLectReq.div': ''
+											} );
+					if ( result.substr(0, 1) == '0' ) {
+						isModify = true;
+					}
+					else if ( result.substr(0, 3) == '111' || result.substr(0, 3) == '132' ) {
+						alert( result.substr(3) );
+						location.reload();
+						return;
+					}
+					else if ( result.substr(0, 1) != '0' ) {
+						alert ( result.substr(3) );
+						window.focus();
+						doLoadOnlineLectReqGrid();
+						return;
+					}
+				}
+			}
+
+			if ( isModify ) {
+				//저장 후 메시지를 서버에서 받음.. (2012.12.6)
+				if ( result.substr(1) == '' || result.substr(1) == null ) {
+					
+					alert('다시  수정하세요.');
+					
+					
+					
+				} else {
+					alert( result.substr(1) );
+				}
+				doInitOnlineLectCourseGrid();
+				doLoadOnlineLectReqGrid();
+				doLoadLectPackReqGrid();
+			}else{
+				
+				alert('변경된 데이터가 없습니다.');
+				
+				
+				
+			}
+		}
+
+		// 버튼컨트롤
+		function doButtonControlForLectCourse(value1, value2, value3, value4) {
+			Utils.setEditable('btn_confirm',value1);
+			Utils.setEditable('btn_cancel',value2);
+			Utils.setEditable('btn_add',value3);
+			Utils.setEditable('btn_cancel_grid',value4);
+		}
+		
+		function doButtonControlForLectReq(value1, value2) {
+			Utils.setEditable('btn_delete',value1);
+			Utils.setEditable('btn_modify',value2);
+		}
+
+		// 수강꾸러미에서 수강신청 버튼 클릭 시
+		function doAddFromPack() {
+			Utils.focus('search_subj_class_cde');
+			<!--start netfunnel 적용 21.03.12.-->
+			NetFunnel_Action({action_id:"pack_inpt_req"}, function(ev,ret){
+		    <!--end netfunnel 적용 21.03.12.-->
+			var rowId  = lectPackReqGrid.getSelectedRowId();
+			var result = requestData( 	'procLectPackReqForInpt',
+									{ 	
+										'onlineLectReq.open_yr_trm': '',
+										// 자동입력방지
+										//'onlineLectReq.captcha_cde': Utils.getFieldValue( 'captcha_cde' ),
+										'onlineLectReq.subj_cde': lectPackReqGrid.getValue( rowId, 'subj_cde' ),
+										'onlineLectReq.sub_class_cde': lectPackReqGrid.getValue( rowId, 'sub_class_cde' ),
+										'onlineLectReq.subj_div_cde': lectPackReqGrid.getValue( rowId, 'subj_div_cde' ),
+										'onlineLectReq.lect_req_div_cde': '',
+										'onlineLectReq.lect_req_sts_cde': '',
+										'onlineLectReq.stu_nbr': '',
+										'onlineLectReq.strt_stu_nbr_yr': '',
+										'onlineLectReq.div': ''
+									},
+									function( fieldName ) {
+										Utils.focus( 'captcha_cde');
+									});
+			
+			<!--start netfunnel 적용 21.03.12.-->
+			NetFunnel_Complete();
+			<!--end netfunnel 적용 21.03.12.-->
+
+			
+			if ( result == null ) {
+				return false;
+			}			
+			if ( result.substr(0, 1) == '0' ) {
+				//저장 후 메시지를 서버에서 받음.. (2012.12.6)
+				if ( result.substr(1) == '' || result.substr(1) == null ) {
+					
+					alert('다시  신청하세요.');
+					
+					
+					
+				} else {
+					alert( result.substr(1) );
+				}
+				doInitOnlineLectCourseGrid();
+				doLoadOnlineLectReqGrid();
+				doLoadLectPackReqGrid();
+				Utils.focus('search_subj_class_cde');
+			}else if ( result.substr(0, 3) == '111' || result.substr(0, 3) == '132' ) {
+				alert( result.substr(3) );
+				location.reload();
+				return ;
+			}else if ( result.substr(0, 1) != '0' ) {
+				alert ( result.substr(3) );
+				doInitOnlineLectCourseGrid();
+				//2016.2.16(추가)
+				doLoadLectPackReqGrid();
+				
+				window.focus();
+				return ;
+			} else if ( result.substr(0, 3) == '***' ) {
+				alert ( result.substr(3) );
+				doInitOnlineLectCourseGrid();
+			}
+			Utils.focus('search_subj_class_cde');
+			
+			});
+		}
+		
+		// 자동입력방지 적용소스
+		function refreshCapcha() {
+			$('captcha').src = '/captcha?' + new Date().getTime();
+			
+			Utils.setFieldValue("captcha_cde","");
+			}
+		
+	</script>
+	<!-- 본문 끝 -->
+	</div>
+	<div id="copyright"></div>
+	<script type="text/javascript">
+	function logout(){
+		executeAction( '/Sugang/comm/support/login/logout' );
+	}
+
+	// 자동입력방지 적용소스
+	function refreshCapcha() {
+		$('captcha').src = '/Sugang/captcha?' + new Date().getTime();
+		
+		Utils.setFieldValue("captcha_cde","");
+			}
+	//언어변경
+	function changeLangage(langage) {
+		var result = requestData( 	'/Sugang/comm/support/multilingual/changeLangage',
+				{
+					'langageMode':langage
+				},
+				function( fieldName ) {
+					location.reload();
+				});
+		location.reload();
+	}
+	
+	</script>
+	</div>
+
+
+
+</body></html>

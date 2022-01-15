@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+div.grid {
+	padding-left: 0px;
+	border:1px solid #cfcfcf;
+	margin-bottom: 5px;
+}
+
+div.grid div {
+	padding-left: 0;
+	text-align: left;
+}
+
+div.grid div.title {
+	overflow-x: hidden;
+	overflow-y: hidden;
+	border-right: 0;
+	position: absolute;
+}
+
+div.grid div.data {
+	overflow-x: auto;
+	overflow-y: auto;
+	height: 100%;
+}
+
+div.grid div.title table,
+div.grid div.data table {
+	border-collapse: collapse;
+	table-layout: fixed;
+	width: 100%;
+	border-top: 1px solid #8a8a8a;
+	border-right: 1px solid #cfcfcf;
+	border-bottom: 1px solid #cfcfcf;
+}
+
+div.grid th {
+	color: #000000;
+	background: #efefef;
+	padding: 7px 0 4px 0;
+	border: 1px solid #cfcfcf;
+	font-weight: normal;
+	text-align: center; /* 수정 2013.12 fusionsoft */
+}
+
+div.grid td {
+	padding: 5px 5px 4px 5px;
+	border: 1px solid #cfcfcf;
+}
+
+div.grid th a {
+	color: black;
+	text-decoration: none;
+}
+
+div.grid th a:hover {
+	text-decoration: underline;
+}
+
+div.grid div.data table tr.data {
+	cursor: pointer;
+}
+
+div.grid div.data table .selected {
+	background: #FFEEEF;
+	color: #0105BE;
+}
+
+div.grid div.data table .added {
+	font-weight: bold;
+}
+
+div.grid div.data table .modified {
+	font-style: italic;
+	font-weight: bold;
+}
+
+div.grid div.data table .deleted {
+	display: none;
+}
+
+div.grid div.data table tr.emptyResult td {
+	text-align: center;
+	height: 30px;
+}
+
+div.grid .hover {
+	background: #eeeeee;
+}
+
+div.grid div.loading {
+	height: 50%;
+	text-align: center;
+	font-weight: bold;
+	font-size: 20px;
+	padding-top: 100px;
+	background-repeat: no-repeat;
+	background-position: 330px 100px;
+}
+
+div.grid div.pages {
+	text-align: center;
+	margin-top: 5px;
+}
+
+div.grid div.pages button {
+	background: none;
+	border: 1px solid lightgrey;
+	padding: 2px 2px 2px 2px;
+}
+
+div.grid div.pages button.page {
+	border: 1px dotted lightgrey;
+}
+
+div.grid div.pages button.selected {
+	font-weight: bold;
+	background: #efefef;
+}
+
+col.checked {
+	width: 40px;
+}
+
+th.checked, td.checked {
+	text-align: center;
+}
+
+th.checked input, td.checked input {
+	border: none;
+}
+
+col.no {
+	width: 20px;
+}
